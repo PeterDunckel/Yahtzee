@@ -20,6 +20,7 @@ public class YahtzeeMain extends JFrame {
 	private JButton[] dieButtons = new JButton[5];
 	
 	private Game game = new Game();
+	private static boolean firstRoll = true;
 	
 	private JPanel contentPane;
 
@@ -115,7 +116,11 @@ public class YahtzeeMain extends JFrame {
 		rollDieBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
+				if(firstRoll){
+					firstRoll = false;
+				}else{
+					disableUnselectedDie();
+				}
 				game.rollDice();
 				displayDice();
 			}
@@ -124,6 +129,16 @@ public class YahtzeeMain extends JFrame {
 		contentPane.add(rollDieBtn);
 	}
 	
+	protected void disableUnselectedDie() {
+		int index=0;
+		for(Die d: game.dice){
+			if(d.getRollEnabled() == false){
+				dieButtons[index].setEnabled(false);
+			}							
+			index++;
+		}		
+	}
+
 	private void displayDice(){
 		
 		for(int i = 0; i < 5; i++){
@@ -132,5 +147,4 @@ public class YahtzeeMain extends JFrame {
 			
 		}
 	}
-	
 }
