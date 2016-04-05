@@ -117,11 +117,12 @@ public class YahtzeeMain extends JFrame {
 		rollDieBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(firstRoll){
-					firstRoll = false;
-				}else{
-					//Do nothing
-				}
+//				
+//				if(firstRoll){
+//					firstRoll = false;
+//				}else{
+//					//Do nothing
+//				}
 				game.rollDice();
 				displayDice();
 			}
@@ -136,7 +137,8 @@ public class YahtzeeMain extends JFrame {
 				//When the dice values are as desired
 				//Reset to first roll(Only three rolls each iteration)
 				//and set scores
-				firstRoll = true;
+				//firstRoll = true;
+				
 				resetDice();
 			}
 		});
