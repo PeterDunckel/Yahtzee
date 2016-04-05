@@ -1,6 +1,7 @@
 package yahtzeeGame;
 
 import java.awt.BorderLayout;
+import java.awt.Button;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -119,7 +120,7 @@ public class YahtzeeMain extends JFrame {
 				if(firstRoll){
 					firstRoll = false;
 				}else{
-					disableUnselectedDie();
+					//Do nothing
 				}
 				game.rollDice();
 				displayDice();
@@ -127,17 +128,27 @@ public class YahtzeeMain extends JFrame {
 		});
 		rollDieBtn.setBounds(6, 263, 117, 40);
 		contentPane.add(rollDieBtn);
+		
+		JButton btnSetScore = new JButton("Set Score");
+		btnSetScore.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				//When the dice values are as desired
+				//Reset to first roll(Only three rolls each iteration)
+				//and set scores
+				firstRoll = true;
+				resetDice();
+			}
+		});
+		btnSetScore.setBounds(312, 263, 89, 40);
+		contentPane.add(btnSetScore);
 	}
 	
-	protected void disableUnselectedDie() {
-		int index=0;
-		for(Die d: game.dice){
-			if(d.getRollEnabled() == false){
-				dieButtons[index].setEnabled(false);
-			}							
-			index++;
-		}		
-	}
+	protected void resetDice() {
+		for(int i = 0; i < 5; i++){			
+			dieButtons[i].setText("?");			
+		}
+	}	
 
 	private void displayDice(){
 		
