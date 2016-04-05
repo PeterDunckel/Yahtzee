@@ -15,11 +15,14 @@ public class Die {
 	private boolean rollEnabled;
 	
 	//Default Constructor
-	public Die(){};	
+	public Die(){
+		rollEnabled = true;
+	}
 
 	public void rollDie() {
 		Random rand = new Random();
 		rollValue = rand.nextInt(SIDES) + 1;
+		rollEnabled = false;
 	}
 	
 	public int getRollValue() {
@@ -30,7 +33,7 @@ public class Die {
 		rollEnabled = r;
 	}
 	
-	public boolean getRollEnabled(boolean r){
+	public boolean getRollEnabled(){
 		return rollEnabled;
 	}
 }
