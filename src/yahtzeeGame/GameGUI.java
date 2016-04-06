@@ -46,7 +46,7 @@ public class GameGUI extends JFrame {
 		rollNum = 0;
 		
 		dieOne = new JButton("?");
-		dieOne.setBackground(Color.WHITE);
+		dieOne.setBackground(new Color(238, 238, 238));
 		dieOne.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -72,6 +72,7 @@ public class GameGUI extends JFrame {
 		dieButtons[0] = dieOne;
 		
 		dieTwo = new JButton("?");
+		dieTwo.setBackground(new Color(238, 238, 238));
 		dieTwo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
