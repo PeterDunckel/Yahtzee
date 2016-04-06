@@ -67,7 +67,7 @@ public class ScorecardGUI extends JFrame {
 				{"Sixes", null},
 				{"Total Score", null},
 				{"Bonus", null},
-				{"Total", null},
+				{"Total Upper Section", null},
 			},
 			new Object[] {
 				"Button", "Score"
@@ -182,8 +182,9 @@ class ButtonEditor extends DefaultCellEditor {
 	    if (isPushed) {
 	      // 
 	      // 
-	      JOptionPane.showMessageDialog(button, label + ": Ouch!");
-	      // System.out.println(label + ": Ouch!");
+	      JOptionPane.showMessageDialog(button, label + ": Add here!");
+	      
+	      // System.out.println(label + ": Add Here!");
 	    }
 	    isPushed = false;
 	    return new String(label);
