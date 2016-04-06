@@ -1,6 +1,7 @@
 package yahtzeeGame;
 
 import java.awt.EventQueue;
+import javax.swing.JButton;
 
 public class YahtzeeMain {
 

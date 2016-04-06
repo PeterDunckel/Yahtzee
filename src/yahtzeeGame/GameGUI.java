@@ -12,6 +12,9 @@ import javax.swing.JButton;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import java.awt.SystemColor;
 
 public class GameGUI extends JFrame {
 
@@ -23,22 +26,27 @@ public class GameGUI extends JFrame {
 	private JButton[] dieButtons = new JButton[5];
 	
 	private Game game = new Game();
-	private static boolean firstRoll = true;
-	
 	private JPanel contentPane;
+	private JButton addPlayerBtn;
+	private JLabel MessageLbl;
+	private JButton btnRestartGame;
+	private int rollNum;
 
 	/**
 	 * Create the frame.
 	 */
 	public GameGUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 350);
+		setBounds(100, 100, 335, 238);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		rollNum = 0;
+		
 		dieOne = new JButton("?");
+		dieOne.setBackground(Color.WHITE);
 		dieOne.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -56,9 +64,9 @@ public class GameGUI extends JFrame {
 				displayDice();
 			}
 		});
-		rollDieBtn.setBounds(6, 263, 117, 40);
+		rollDieBtn.setBounds(16, 139, 298, 50);
 		contentPane.add(rollDieBtn);
-		dieOne.setBounds(6, 6, 50, 50);
+		dieOne.setBounds(16, 81, 50, 50);
 		dieOne.setFocusPainted(false);
 		contentPane.add(dieOne);
 		dieButtons[0] = dieOne;
@@ -71,7 +79,7 @@ public class GameGUI extends JFrame {
 				enableDiceForRoll(1);
 			}
 		});
-		dieTwo.setBounds(6, 55, 50, 50);
+		dieTwo.setBounds(78, 81, 50, 50);
 		dieTwo.setFocusPainted(false);
 		contentPane.add(dieTwo);
 		dieButtons[1] = dieTwo;
@@ -84,7 +92,7 @@ public class GameGUI extends JFrame {
 				enableDiceForRoll(2);
 			}
 		});
-		dieThree.setBounds(6, 104, 50, 50);
+		dieThree.setBounds(140, 81, 50, 50);
 		dieThree.setFocusPainted(false);
 		contentPane.add(dieThree);
 		dieButtons[2] = dieThree;
@@ -97,7 +105,7 @@ public class GameGUI extends JFrame {
 				enableDiceForRoll(3);
 			}
 		});
-		dieFour.setBounds(6, 153, 50, 50);
+		dieFour.setBounds(202, 81, 50, 50);
 		dieFour.setFocusPainted(false);
 		contentPane.add(dieFour);
 		dieButtons[3] = dieFour;
@@ -111,23 +119,25 @@ public class GameGUI extends JFrame {
 
 			}
 		});
-		dieFive.setBounds(6, 201, 50, 50);
+		dieFive.setBounds(264, 81, 50, 50);
 		dieFive.setFocusPainted(false);
 		contentPane.add(dieFive);
 		dieButtons[4] = dieFive;
 		
-		JButton btnSetScore = new JButton("Set Score");
-		btnSetScore.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				//When the dice values are as desired
-				//Reset to first roll(Only three rolls each iteration)
-				//and set scores
-				resetDice();
-			}
-		});
-		btnSetScore.setBounds(312, 263, 89, 40);
-		contentPane.add(btnSetScore);
+		addPlayerBtn = new JButton("Add Player");
+		addPlayerBtn.setBounds(202, 6, 117, 29);
+		contentPane.add(addPlayerBtn);
+		
+		MessageLbl = new JLabel("Message Label");
+		MessageLbl.setHorizontalAlignment(SwingConstants.CENTER);
+		MessageLbl.setForeground(Color.BLACK);
+		MessageLbl.setBackground(Color.WHITE);
+		MessageLbl.setBounds(16, 40, 298, 29);
+		contentPane.add(MessageLbl);
+		
+		btnRestartGame = new JButton("Restart Game");
+		btnRestartGame.setBounds(11, 6, 117, 29);
+		contentPane.add(btnRestartGame);
 	}
 	
 	private void enableDiceForRoll(int pos){
@@ -139,12 +149,6 @@ public class GameGUI extends JFrame {
 			dieButtons[pos].setForeground(Color.red);
 		}
 	}
-	
-	private void resetDice() {
-		for(int i = 0; i < 5; i++){			
-			dieButtons[i].setText("?");			
-		}
-	}	
 
 	private void displayDice(){
 		for(int i = 0; i < 5; i++){
