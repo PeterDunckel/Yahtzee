@@ -1,24 +1,32 @@
 package yahtzeeGame;
 
-import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JTable;
-import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.border.SoftBevelBorder;
-import javax.swing.border.BevelBorder;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
 public class ScorecardGUI extends JFrame {
 
 	private JPanel contentPane;
-	private JTable table;
-	private JTable table_1;
+	private JTable upperSecTable;
+	private JTable lowerSecTable;
 
 	/**
 	 * Launch the application.
@@ -47,26 +55,29 @@ public class ScorecardGUI extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		table = new JTable();
-		table.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		table.setModel(new DefaultTableModel(
+		upperSecTable = new JTable();
+		upperSecTable.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		upperSecTable.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
+				{"Aces", null},
+				{"Twos", null},
+				{"Threes", null},
+				{"Fours", null},
+				{"Fives", null},
+				{"Sixes", null},
+				{"Total Score", null},
+				{"Bonus", null},
+				{"Total", null},
 			},
-			new String[] {
-				"New column", "New column"
+			new Object[] {
+				"Button", "Score"
 			}
 		));
-		table.setBounds(12, 72, 308, 144);
-		contentPane.add(table);
+		upperSecTable.getColumn("Button").setCellRenderer(new ButtonRenderer());
+		upperSecTable.getColumn("Button").setCellEditor(
+	        new ButtonEditor(new JCheckBox()));
+		upperSecTable.setBounds(12, 72, 308, 144);
+		contentPane.add(upperSecTable);
 		
 		JLabel lblYahtzee = new JLabel("YAHTZEE");
 		lblYahtzee.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -77,29 +88,32 @@ public class ScorecardGUI extends JFrame {
 		lblName.setBounds(121, 22, 185, 16);
 		contentPane.add(lblName);
 		
-		table_1 = new JTable();
-		table_1.setModel(new DefaultTableModel(
+		lowerSecTable = new JTable();
+		lowerSecTable.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
+				{"3 of a Kind", null},
+				{"4 of a Kind", null},
+				{"Full House", null},
+				{"Sm. Straight", null},
+				{"Lg. Straight", null},
+				{"Yahtzee", null},
+				{"Chance", null},
+				{"Yahtzee Bonus 1", null},
+				{"Yahtzee Bonus 2", null},
+				{"Total Upper Section", null},
+				{"Total Lower Section", null},
+				{"Grand Total", null},
 			},
-			new String[] {
-				"New column", "New column"
+			new Object[] {
+				"Button", "Score"
 			}
 		));
-		table_1.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		table_1.setBounds(12, 247, 308, 193);
-		contentPane.add(table_1);
+		lowerSecTable.getColumn("Button").setCellRenderer(new ButtonRenderer());
+		lowerSecTable.getColumn("Button").setCellEditor(
+	        new ButtonEditor(new JCheckBox()));
+		lowerSecTable.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		lowerSecTable.setBounds(12, 247, 308, 193);
+		contentPane.add(lowerSecTable);
 		
 		JLabel lblUpperSection = new JLabel("Upper Section:");
 		lblUpperSection.setBounds(12, 54, 97, 16);
@@ -110,3 +124,77 @@ public class ScorecardGUI extends JFrame {
 		contentPane.add(lblLowerSection);
 	}
 }
+
+class ButtonRenderer extends JButton implements TableCellRenderer {
+
+	  public ButtonRenderer() {
+	    setOpaque(true);
+	  }
+
+	  public Component getTableCellRendererComponent(JTable table, Object value,
+	      boolean isSelected, boolean hasFocus, int row, int column) {
+	    if (isSelected) {
+	      setForeground(table.getSelectionForeground());
+	      setBackground(table.getSelectionBackground());
+	    } else {
+	      setForeground(table.getForeground());
+	      setBackground(UIManager.getColor("Button.background"));
+	    }
+	    setText((value == null) ? "" : value.toString());
+	    return this;
+	  }
+	}
+
+class ButtonEditor extends DefaultCellEditor {
+	  protected JButton button;
+
+	  private String label;
+
+	  private boolean isPushed;
+
+	  public ButtonEditor(JCheckBox checkBox) {
+	    super(checkBox);
+	    button = new JButton();
+	    button.setOpaque(true);
+	    button.addActionListener(new ActionListener() {
+	      public void actionPerformed(ActionEvent e) {
+	        fireEditingStopped();
+	      }
+	    });
+	  }
+
+	  public Component getTableCellEditorComponent(JTable table, Object value,
+	      boolean isSelected, int row, int column) {
+	    if (isSelected) {
+	      button.setForeground(table.getSelectionForeground());
+	      button.setBackground(table.getSelectionBackground());
+	    } else {
+	      button.setForeground(table.getForeground());
+	      button.setBackground(table.getBackground());
+	    }
+	    label = (value == null) ? "" : value.toString();
+	    button.setText(label);
+	    isPushed = true;
+	    return button;
+	  }
+
+	  public Object getCellEditorValue() {
+	    if (isPushed) {
+	      // 
+	      // 
+	      JOptionPane.showMessageDialog(button, label + ": Ouch!");
+	      // System.out.println(label + ": Ouch!");
+	    }
+	    isPushed = false;
+	    return new String(label);
+	  }
+
+	  public boolean stopCellEditing() {
+	    isPushed = false;
+	    return super.stopCellEditing();
+	  }
+
+	  protected void fireEditingStopped() {
+	    super.fireEditingStopped();
+	  }
+	}
