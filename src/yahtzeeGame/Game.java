@@ -12,11 +12,12 @@ public class Game {
 	
 	public Die[] dice = new Die[5];
 	public ArrayList<Player> players = new ArrayList<Player>();
+	public int currentTurn;
 	
 	public Game(){
 		
 		loadDice();
-		
+		currentTurn = 0;
 	}
 	
 	public void rollDice(){
@@ -37,4 +38,5 @@ public class Game {
 			dice[i] = d;
 		}
 	}
+
 }

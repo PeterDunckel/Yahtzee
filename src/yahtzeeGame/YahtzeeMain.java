@@ -1,6 +1,7 @@
 package yahtzeeGame;
 
 import java.awt.EventQueue;
+
 import javax.swing.JButton;
 
 public class YahtzeeMain {
@@ -10,9 +11,10 @@ public class YahtzeeMain {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					GameGUI frame = new GameGUI();
 					
+					GameGUI frame = new GameGUI();
 					frame.setVisible(true);
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

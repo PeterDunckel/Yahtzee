@@ -35,7 +35,7 @@ public class GameGUI extends JFrame {
 	private JLabel MessageLbl;
 	private JButton btnRestartGame;
 	private int rollCount;
-	private ArrayList<Object> scoreCards = new ArrayList<Object>();
+	private ArrayList<ScorecardGUI> scoreCards = new ArrayList<ScorecardGUI>();
 	private String playerName;
 	private int playerCount;
 
@@ -67,14 +67,14 @@ public class GameGUI extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 
-				
-				
 				game.rollDice();
 				displayDice();
 				rollCount++;
 				if(rollCount == 3){
 					rollDieBtn.setEnabled(false);
 				}
+				scoreCards[game.currentTurn].updateButtons(game.dice);
+				
 			}
 		});
 		rollDieBtn.setBounds(16, 139, 298, 50);
@@ -200,6 +200,7 @@ public class GameGUI extends JFrame {
 		for(int i = 0; i < 5; i++){
 			dieButtons[i].setText(Integer.toString(game.dice[i].getRollValue()));
 			dieButtons[i].setForeground(Color.black);
+			
 		}
 	}
 	
