@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
@@ -35,6 +36,8 @@ public class GameGUI extends JFrame {
 	private JButton btnRestartGame;
 	private int rollCount;
 	private ArrayList<Object> scoreCards = new ArrayList<Object>();
+	private String playerName;
+	private int playerCount;
 
 	/**
 	 * Create the frame.
@@ -48,6 +51,7 @@ public class GameGUI extends JFrame {
 		contentPane.setLayout(null);
 		
 		rollCount = 0;
+		playerCount = 0;
 		
 		dieOne = new JButton("?");
 		dieOne.addMouseListener(new MouseAdapter() {
@@ -137,13 +141,25 @@ public class GameGUI extends JFrame {
 		addPlayerBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				ScorecardGUI scFrame = new ScorecardGUI();
-				scFrame.setVisible(true);
+								
+				//Player Creation
+				playerName = JOptionPane.showInputDialog(
+                        "What is your name?", null);				
+				Player newPlayer = new Player(playerName);
+				game.players.add(newPlayer);
 				
+				//Scorecard creation
+				ScorecardGUI scFrame = new ScorecardGUI(playerName);
+				scFrame.setVisible(true);
 				scoreCards.add(scFrame);
 				
-				Player newPlayer = new Player("Jacob");
-				game.players.add(newPlayer);
+				playerCount++;
+				
+				//Only four players allowed
+				//Disable addButton after four players added
+				if(playerCount >= 4){
+					addPlayerBtn.setEnabled(false);
+				}				
 			}
 		});
 		addPlayerBtn.setBounds(202, 6, 117, 29);

@@ -24,6 +24,8 @@ public class ScorecardGUI extends JFrame {
 	private JPanel contentPane;
 	private JTable upperSecTable;
 	private JTable lowerSecTable;
+	private static String playerName;
+	
 
 	/**
 	 * Launch the application.
@@ -32,7 +34,7 @@ public class ScorecardGUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ScorecardGUI frame = new ScorecardGUI();
+					ScorecardGUI frame = new ScorecardGUI(playerName);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -44,7 +46,7 @@ public class ScorecardGUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ScorecardGUI() {
+	public ScorecardGUI(String playerName) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 350, 501);
 		contentPane = new JPanel();
@@ -117,6 +119,11 @@ public class ScorecardGUI extends JFrame {
 		JLabel lblLowerSection = new JLabel("Lower Section:");
 		lblLowerSection.setBounds(12, 252, 97, 16);
 		contentPane.add(lblLowerSection);
+		
+		JLabel lblPlayerName = new JLabel("Player");
+		lblPlayerName.setBounds(203, 22, 56, 16);
+		contentPane.add(lblPlayerName);
+		lblPlayerName.setText(playerName);
 	}
 }
 
