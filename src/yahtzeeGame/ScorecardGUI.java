@@ -6,6 +6,8 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -34,24 +36,10 @@ public class ScorecardGUI extends JFrame {
 	private ArrayList<JButton> lowerBtns = new ArrayList<JButton>();	
 	private final String[] upperSecNames ={"Aces","Twos","Threes","Fours","Fives"
 			,"Sixes"};
-	private final String[] lowerSecNames ={"3 of a Kind","T4 of a Kind","Full House","Sm. Straight"
+	private final String[] lowerSecNames ={"3 of a Kind","4 of a Kind","Full House","Sm. Straight"
 			,"Lg. Straight","Yahtzee","Chance"};
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ScorecardGUI frame = new ScorecardGUI(playerName);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private ScoreCard scoreCard = new ScoreCard();
+	private int[] possibleScore = new int[13];
 
 	/**
 	 * Create the frame.
@@ -143,10 +131,84 @@ public class ScorecardGUI extends JFrame {
 				
 	}
 	
+	void notifyScorecard(Die[] dice){
+		
+		
+		for (int i = 0; i < dice.length; i++)
+			System.out.println(dice[i].getRollValue());
+		
+		for (int i = 1; i <= upperBtns.size(); i++){
+			if(scoreCard.upperNum(dice, i) > 0){
+				upperBtns.get(i - 1).setEnabled(true);
+				possibleScore[i - 1] = scoreCard.upperNum(dice, i);
+			} else {
+				upperBtns.get(i - 1).setEnabled(false);
+			}
+		}
+		
+		if(scoreCard.ofAKind(dice, 3)){
+			lowerBtns.get(0).setEnabled(true);
+			possibleScore[6] = scoreCard.totalDice(dice);
+		}else{
+			lowerBtns.get(0).setEnabled(false);
+		}
+		
+		if(scoreCard.ofAKind(dice, 4)){
+			lowerBtns.get(1).setEnabled(true);
+			possibleScore[7] = scoreCard.totalDice(dice);
+		}else{
+			lowerBtns.get(1).setEnabled(false);
+			//possibleScore[6] = 0;
+		}
+		if(scoreCard.isfullHouse(dice)){
+			lowerBtns.get(2).setEnabled(true);
+			possibleScore[8] = 25;
+		}else
+			lowerBtns.get(2).setEnabled(false);
+		
+		if(scoreCard.isStraight(dice, 4)){
+			lowerBtns.get(3).setEnabled(true);
+			possibleScore[9] = 30;
+		}else
+			lowerBtns.get(3).setEnabled(false);
+		
+		if(scoreCard.isStraight(dice, 5)){
+			lowerBtns.get(4).setEnabled(true);
+			possibleScore[10] = 40;
+		}else
+			lowerBtns.get(4).setEnabled(false);
+		
+		if(scoreCard.yahtzee(dice)){
+			lowerBtns.get(5).setEnabled(true);
+			possibleScore[11] = 50;
+		}else
+			lowerBtns.get(5).setEnabled(false);
+		
+		if(scoreCard.chance()){
+			lowerBtns.get(6).setEnabled(true);
+			possibleScore[12] = scoreCard.totalDice(dice);
+		}else
+			lowerBtns.get(6).setEnabled(false);
+		
+	}
+	
 	private void createArrayBtnList(String[] arrayOfNames, ArrayList<JButton> btnArrayList
 			,int x, int y, int height, int width){
 		for(int i=0; i<arrayOfNames.length; i++){
-			btnArrayList.add(new JButton(arrayOfNames[i]));
+			JButton btn = new JButton(arrayOfNames[i]);
+			btn.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+
+					if(btnArrayList.get(0).getText()== upperSecNames[0]){
+						System.out.println(btnArrayList.indexOf(btn));
+						upperLbls.get(btnArrayList.indexOf(btn)).setText(Integer.toString(possibleScore[btnArrayList.indexOf(btn)]));
+					}else{
+						lowerLbls.get(btnArrayList.indexOf(btn)).setText(Integer.toString(possibleScore[btnArrayList.indexOf(btn)-6]));
+					}
+				}
+			});
+			btnArrayList.add(btn);
 			btnArrayList.get(i).setBounds(x,y+(width*i),height,width);
 			contentPane.add(btnArrayList.get(i));
 		}

@@ -156,8 +156,29 @@ public class ScoreCard {
 		return false;
 	}
 	
+	public boolean yahtzee(Die[] dice){
+		
+		int firstDie = dice[0].getRollValue();
+		
+		for(int i = 1; i < 5; i++){
+			if(firstDie != dice[i].getRollValue())
+				return false;
+		}
+		
+		return true;
+	}
+	
 	public boolean chance(){
 		return lowerSection[6] == -1;
+	}
+	
+	public int totalDice(Die[] dice){
+		
+		int total = 0;
+		for(Die d:dice){
+			total += d.getRollValue();
+		}
+		return total;
 	}
 	
 }

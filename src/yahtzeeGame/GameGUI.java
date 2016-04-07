@@ -73,7 +73,7 @@ public class GameGUI extends JFrame {
 				if(rollCount == 3){
 					rollDieBtn.setEnabled(false);
 				}
-				scoreCards[game.currentTurn].updateButtons(game.dice);
+				scoreCards.get(game.currentTurn).notifyScorecard(game.dice);
 				
 			}
 		});
