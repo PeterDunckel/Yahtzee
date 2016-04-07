@@ -207,6 +207,7 @@ class ButtonEditor extends DefaultCellEditor {
 	  
 	  private void setRowScore(){
 		  btnTable.setValueAt("Score", rowPosition, 1);
+		  //need to disable button here
 	  }
 }
 
