@@ -5,15 +5,12 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.UIManager;
@@ -49,7 +46,7 @@ public class ScorecardGUI extends JFrame {
 	 */
 	public ScorecardGUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 350, 500);
+		setBounds(100, 100, 350, 501);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -75,9 +72,11 @@ public class ScorecardGUI extends JFrame {
 		));
 		upperSecTable.getColumn("Button").setCellRenderer(new ButtonRenderer());
 		upperSecTable.getColumn("Button").setCellEditor(
-	        new ButtonEditor(new JCheckBox()));
-		upperSecTable.setBounds(12, 72, 308, 144);
+	        new ButtonEditor(new JCheckBox(), upperSecTable));
+		upperSecTable.setBounds(12, 84, 308, 144);
 		contentPane.add(upperSecTable);
+		
+		upperSecTable.setValueAt("1", 0, 1);
 		
 		JLabel lblYahtzee = new JLabel("YAHTZEE");
 		lblYahtzee.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -98,8 +97,6 @@ public class ScorecardGUI extends JFrame {
 				{"Lg. Straight", null},
 				{"Yahtzee", null},
 				{"Chance", null},
-				{"Yahtzee Bonus 1", null},
-				{"Yahtzee Bonus 2", null},
 				{"Total Upper Section", null},
 				{"Total Lower Section", null},
 				{"Grand Total", null},
@@ -110,17 +107,17 @@ public class ScorecardGUI extends JFrame {
 		));
 		lowerSecTable.getColumn("Button").setCellRenderer(new ButtonRenderer());
 		lowerSecTable.getColumn("Button").setCellEditor(
-	        new ButtonEditor(new JCheckBox()));
+	        new ButtonEditor(new JCheckBox(), lowerSecTable));
 		lowerSecTable.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		lowerSecTable.setBounds(12, 247, 308, 193);
+		lowerSecTable.setBounds(12, 270, 308, 160);
 		contentPane.add(lowerSecTable);
 		
 		JLabel lblUpperSection = new JLabel("Upper Section:");
-		lblUpperSection.setBounds(12, 54, 97, 16);
+		lblUpperSection.setBounds(12, 66, 97, 16);
 		contentPane.add(lblUpperSection);
 		
 		JLabel lblLowerSection = new JLabel("Lower Section:");
-		lblLowerSection.setBounds(12, 229, 97, 16);
+		lblLowerSection.setBounds(12, 252, 97, 16);
 		contentPane.add(lblLowerSection);
 	}
 }
@@ -143,17 +140,22 @@ class ButtonRenderer extends JButton implements TableCellRenderer {
 	    setText((value == null) ? "" : value.toString());
 	    return this;
 	  }
-	}
+}
 
 class ButtonEditor extends DefaultCellEditor {
-	  protected JButton button;
+	  protected JButton button;	 
+	  
+	  private JTable btnTable;
 
 	  private String label;
 
 	  private boolean isPushed;
+	  
+	  private int rowPosition;
 
-	  public ButtonEditor(JCheckBox checkBox) {
+	  public ButtonEditor(JCheckBox checkBox, JTable table) {
 	    super(checkBox);
+	    btnTable = table;
 	    button = new JButton();
 	    button.setOpaque(true);
 	    button.addActionListener(new ActionListener() {
@@ -172,7 +174,9 @@ class ButtonEditor extends DefaultCellEditor {
 	      button.setForeground(table.getForeground());
 	      button.setBackground(table.getBackground());
 	    }
+	    rowPosition=row;	    
 	    label = (value == null) ? "" : value.toString();
+	    System.out.println(label + ": row ="+ rowPosition + ", col = "+ column);
 	    button.setText(label);
 	    isPushed = true;
 	    return button;
@@ -182,9 +186,11 @@ class ButtonEditor extends DefaultCellEditor {
 	    if (isPushed) {
 	      // 
 	      // 
-	      JOptionPane.showMessageDialog(button, label + ": Add here!");
-	      
+	      //JOptionPane.showMessageDialog(button, label + ": Add Score!");
 	      // System.out.println(label + ": Add Here!");
+//	      btnTable.setValueAt("2", rowPosition, 1);
+//	      button.setEnabled(false);
+	    	setRowScore();
 	    }
 	    isPushed = false;
 	    return new String(label);
@@ -198,4 +204,12 @@ class ButtonEditor extends DefaultCellEditor {
 	  protected void fireEditingStopped() {
 	    super.fireEditingStopped();
 	  }
-	}
+	  
+	  private void setRowScore(){
+		  btnTable.setValueAt("Score", rowPosition, 1);
+	  }
+}
+
+
+
+
