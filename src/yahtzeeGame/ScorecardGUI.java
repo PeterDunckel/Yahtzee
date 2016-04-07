@@ -76,8 +76,6 @@ public class ScorecardGUI extends JFrame {
 		upperSecTable.setBounds(12, 84, 308, 144);
 		contentPane.add(upperSecTable);
 		
-		upperSecTable.setValueAt("1", 0, 1);
-		
 		JLabel lblYahtzee = new JLabel("YAHTZEE");
 		lblYahtzee.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblYahtzee.setBounds(12, 13, 97, 28);

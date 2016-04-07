@@ -11,6 +11,7 @@ import java.util.*;
 public class Game {
 	
 	public Die[] dice = new Die[5];
+	public ArrayList<Player> players = new ArrayList<Player>();
 	
 	public Game(){
 		

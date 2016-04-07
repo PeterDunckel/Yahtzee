@@ -11,9 +11,8 @@ public class YahtzeeMain {
 			public void run() {
 				try {
 					GameGUI frame = new GameGUI();
-					ScorecardGUI scFrame = new ScorecardGUI();
+					
 					frame.setVisible(true);
-					scFrame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

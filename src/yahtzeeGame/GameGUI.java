@@ -12,9 +12,12 @@ import javax.swing.JButton;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
 import java.awt.SystemColor;
+import java.util.ArrayList;
 
 public class GameGUI extends JFrame {
 
@@ -30,7 +33,8 @@ public class GameGUI extends JFrame {
 	private JButton addPlayerBtn;
 	private JLabel MessageLbl;
 	private JButton btnRestartGame;
-	private int rollNum;
+	private int rollCount;
+	private ArrayList<Object> scoreCards = new ArrayList<Object>();
 
 	/**
 	 * Create the frame.
@@ -43,7 +47,7 @@ public class GameGUI extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		rollNum = 0;
+		rollCount = 0;
 		
 		dieOne = new JButton("?");
 		dieOne.addMouseListener(new MouseAdapter() {
@@ -59,8 +63,14 @@ public class GameGUI extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 
+				
+				
 				game.rollDice();
 				displayDice();
+				rollCount++;
+				if(rollCount == 3){
+					rollDieBtn.setEnabled(false);
+				}
 			}
 		});
 		rollDieBtn.setBounds(16, 139, 298, 50);
@@ -124,6 +134,18 @@ public class GameGUI extends JFrame {
 		dieButtons[4] = dieFive;
 		
 		addPlayerBtn = new JButton("Add Player");
+		addPlayerBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ScorecardGUI scFrame = new ScorecardGUI();
+				scFrame.setVisible(true);
+				
+				scoreCards.add(scFrame);
+				
+				Player newPlayer = new Player("Jacob");
+				game.players.add(newPlayer);
+			}
+		});
 		addPlayerBtn.setBounds(202, 6, 117, 29);
 		contentPane.add(addPlayerBtn);
 		
@@ -134,7 +156,16 @@ public class GameGUI extends JFrame {
 		MessageLbl.setBounds(16, 40, 298, 29);
 		contentPane.add(MessageLbl);
 		
-		btnRestartGame = new JButton("Restart Game");
+		btnRestartGame = new JButton("Restart Dice");
+		btnRestartGame.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+								
+				rollDieBtn.setEnabled(true);
+				rollCount = 0;
+				resetDice();
+			}
+		});
 		btnRestartGame.setBounds(11, 6, 117, 29);
 		contentPane.add(btnRestartGame);
 	}
@@ -153,6 +184,13 @@ public class GameGUI extends JFrame {
 		for(int i = 0; i < 5; i++){
 			dieButtons[i].setText(Integer.toString(game.dice[i].getRollValue()));
 			dieButtons[i].setForeground(Color.black);
+		}
+	}
+	
+	private void resetDice(){
+		for(int i = 0; i < 5; i++){
+			dieButtons[i].setText("?");
+			game.dice[i].setRollEnabled(true);
 		}
 	}
 }
