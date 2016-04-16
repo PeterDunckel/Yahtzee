@@ -28,14 +28,23 @@ public class Die {
 		rollEnabled = false;
 	}
 	
+	//---------------
+	// Get Roll Value
+	//---------------
 	public int getRollValue() {
 		return rollValue;
 	}
 	
+	//-----------------
+	// Set Roll Enabled
+	//-----------------
 	public void setRollEnabled(boolean r){
 		rollEnabled = r;
 	}
 	
+	//-----------------
+	// Get Roll Enabled
+	//-----------------
 	public boolean getRollEnabled(){
 		return rollEnabled;
 	}
