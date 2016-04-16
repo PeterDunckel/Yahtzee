@@ -50,9 +50,13 @@ public class GameGUI extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		// initialize variables
 		rollCount = 0;
 		playerCount = 0;
 		
+		//----------------------
+		// Die One Button Tapped
+		//----------------------
 		dieOne = new JButton("?");
 		dieOne.addMouseListener(new MouseAdapter() {
 			@Override
@@ -62,6 +66,9 @@ public class GameGUI extends JFrame {
 			}
 		});
 		
+		//-----------------------
+		// Roll Die Button Tapped
+		//-----------------------
 		JButton rollDieBtn = new JButton("Roll Dice");
 		rollDieBtn.addMouseListener(new MouseAdapter() {
 			@Override
@@ -84,6 +91,9 @@ public class GameGUI extends JFrame {
 		contentPane.add(dieOne);
 		dieButtons[0] = dieOne;
 		
+		//-----------------------
+		// Die Two Button Tapped
+		//-----------------------
 		dieTwo = new JButton("?");
 		dieTwo.addMouseListener(new MouseAdapter() {
 			@Override
@@ -97,6 +107,9 @@ public class GameGUI extends JFrame {
 		contentPane.add(dieTwo);
 		dieButtons[1] = dieTwo;
 		
+		//------------------------
+		// Die Three Button Tapped
+		//------------------------
 		dieThree = new JButton("?");
 		dieThree.addMouseListener(new MouseAdapter() {
 			@Override
@@ -110,6 +123,9 @@ public class GameGUI extends JFrame {
 		contentPane.add(dieThree);
 		dieButtons[2] = dieThree;
 		
+		//-----------------------
+		// Die Four Button Tapped
+		//-----------------------
 		dieFour = new JButton("?");
 		dieFour.addMouseListener(new MouseAdapter() {
 			@Override
@@ -123,6 +139,9 @@ public class GameGUI extends JFrame {
 		contentPane.add(dieFour);
 		dieButtons[3] = dieFour;
 		
+		//-----------------------
+		// Die Five Button Tapped
+		//-----------------------
 		dieFive = new JButton("?");
 		dieFive.addMouseListener(new MouseAdapter() {
 			@Override
@@ -137,6 +156,9 @@ public class GameGUI extends JFrame {
 		contentPane.add(dieFive);
 		dieButtons[4] = dieFive;
 		
+		//-------------------------
+		// Add Player Button Tapped
+		//-------------------------
 		addPlayerBtn = new JButton("Add Player");
 		addPlayerBtn.addMouseListener(new MouseAdapter() {
 			@Override
@@ -153,6 +175,7 @@ public class GameGUI extends JFrame {
 				scFrame.setVisible(true);
 				scoreCards.add(scFrame);
 				
+				// increase player count when adding more players
 				playerCount++;
 				
 				//Only four players allowed
@@ -172,6 +195,9 @@ public class GameGUI extends JFrame {
 		MessageLbl.setBounds(16, 40, 298, 29);
 		contentPane.add(MessageLbl);
 		
+		//---------------------------
+		// Restart Game Button Tapped
+		//---------------------------
 		btnRestartGame = new JButton("Restart Dice");
 		btnRestartGame.addMouseListener(new MouseAdapter() {
 			@Override
@@ -186,6 +212,9 @@ public class GameGUI extends JFrame {
 		contentPane.add(btnRestartGame);
 	}
 	
+	//---------------------
+	// Enable Dice for Roll
+	//---------------------
 	private void enableDiceForRoll(int pos){
 		if (game.dice[pos].getRollEnabled()){
 			game.dice[pos].setRollEnabled(false);
@@ -196,6 +225,9 @@ public class GameGUI extends JFrame {
 		}
 	}
 
+	//-------------
+	// Display Dice
+	//-------------
 	private void displayDice(){
 		for(int i = 0; i < 5; i++){
 			dieButtons[i].setText(Integer.toString(game.dice[i].getRollValue()));
@@ -204,6 +236,9 @@ public class GameGUI extends JFrame {
 		}
 	}
 	
+	//-----------
+	// Reset Dice
+	//-----------
 	private void resetDice(){
 		for(int i = 0; i < 5; i++){
 			dieButtons[i].setText("?");

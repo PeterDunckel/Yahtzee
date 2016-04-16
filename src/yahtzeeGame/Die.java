@@ -18,21 +18,33 @@ public class Die {
 	public Die(){
 		rollEnabled = true;
 	}
-
+	
+	//---------
+	// Roll Die
+	//---------
 	public void rollDie() {
 		Random rand = new Random();
 		rollValue = rand.nextInt(SIDES) + 1;
 		rollEnabled = false;
 	}
 	
+	//---------------
+	// Get Roll Value
+	//---------------
 	public int getRollValue() {
 		return rollValue;
 	}
 	
+	//-----------------
+	// Set Roll Enabled
+	//-----------------
 	public void setRollEnabled(boolean r){
 		rollEnabled = r;
 	}
 	
+	//-----------------
+	// Get Roll Enabled
+	//-----------------
 	public boolean getRollEnabled(){
 		return rollEnabled;
 	}

@@ -131,6 +131,9 @@ public class ScorecardGUI extends JFrame {
 				
 	}
 	
+	//------------------
+	// Notify Score Card
+	//------------------
 	void notifyScorecard(Die[] dice){
 		
 		

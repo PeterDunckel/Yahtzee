@@ -10,6 +10,7 @@ import java.util.*;
 
 public class Game {
 	
+	// Singleton implementation
 	private static Game game = new Game();
 	
 	public Die[] dice = new Die[5];
@@ -22,10 +23,14 @@ public class Game {
 		currentTurn = 0;
 	}
 	
+	// Singleton getter
 	public static Game getGameSingleton(){
 		return game;
 	}
 	
+	//----------
+	// Roll Dice
+	//----------
 	public void rollDice(){
 		
 		for(Die d: dice){
@@ -37,6 +42,9 @@ public class Game {
 		}
 	}
 
+	//----------
+	// Load Dice
+	//----------
 	private void loadDice(){
 		
 		for(int i = 0; i < dice.length; i++){
