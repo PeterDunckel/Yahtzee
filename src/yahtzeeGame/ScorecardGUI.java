@@ -148,14 +148,14 @@ public class ScorecardGUI extends JFrame {
 		
 		if(scoreCard.ofAKind(dice, 3)){
 			lowerBtns.get(0).setEnabled(true);
-			possibleScore[6] = scoreCard.totalDice(dice);
+//			possibleScore[6] = scoreCard.totalDice(dice);
 		}else{
 			lowerBtns.get(0).setEnabled(false);
 		}
 		
 		if(scoreCard.ofAKind(dice, 4)){
 			lowerBtns.get(1).setEnabled(true);
-			possibleScore[7] = scoreCard.totalDice(dice);
+//			possibleScore[7] = scoreCard.totalDice(dice);
 		}else{
 			lowerBtns.get(1).setEnabled(false);
 			//possibleScore[6] = 0;
@@ -178,18 +178,18 @@ public class ScorecardGUI extends JFrame {
 		}else
 			lowerBtns.get(4).setEnabled(false);
 		
-		if(scoreCard.yahtzee(dice)){
-			lowerBtns.get(5).setEnabled(true);
-			possibleScore[11] = 50;
-		}else
-			lowerBtns.get(5).setEnabled(false);
-		
-		if(scoreCard.chance()){
-			lowerBtns.get(6).setEnabled(true);
-			possibleScore[12] = scoreCard.totalDice(dice);
-		}else
-			lowerBtns.get(6).setEnabled(false);
-		
+//		if(scoreCard.yahtzee(dice)){
+//			lowerBtns.get(5).setEnabled(true);
+//			possibleScore[11] = 50;
+//		}else
+//			lowerBtns.get(5).setEnabled(false);
+//		
+//		if(scoreCard.chance()){
+//			lowerBtns.get(6).setEnabled(true);
+//			possibleScore[12] = scoreCard.totalDice(dice);
+//		}else
+//			lowerBtns.get(6).setEnabled(false);
+//		
 	}
 	
 	private void createArrayBtnList(String[] arrayOfNames, ArrayList<JButton> btnArrayList
