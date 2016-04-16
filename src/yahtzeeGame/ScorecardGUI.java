@@ -40,7 +40,6 @@ public class ScorecardGUI extends JFrame {
 			,"Lg. Straight","Yahtzee","Chance"};
 	private ScoreCard scoreCard = new ScoreCard();
 	private int[] possibleScore = new int[13];
-
 	Game game = Game.getGameSingleton();
 
 	/**
@@ -48,36 +47,12 @@ public class ScorecardGUI extends JFrame {
 	 */
 	public ScorecardGUI(String playerName) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 350, 500);
+		setBounds(100, 100, 350, 580);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-//		upperSecTable = new JTable();
-//		upperSecTable.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-//		upperSecTable.setModel(new DefaultTableModel(
-//			new Object[][] {
-//				{"Aces", null},
-//				{"Twos", null},
-//				{"Threes", null},
-//				{"Fours", null},
-//				{"Fives", null},
-//				{"Sixes", null},
-//				{"Total Score", null},
-//				{"Bonus", null},
-//				{"Total Upper Section", null},
-//			},
-//			new String[] {
-//				"Button", "Score"
-//			}
-//		));
-//		upperSecTable.getColumn("Button").setCellRenderer(new ButtonRenderer());
-//		upperSecTable.getColumn("Button").setCellEditor(
-//	        new ButtonEditor(new JCheckBox(), upperSecTable));
-//		upperSecTable.setBounds(12, 84, 308, 144);
-//		contentPane.add(upperSecTable);
-		
+			
 		JLabel lblYahtzee = new JLabel("YAHTZEE");
 		lblYahtzee.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblYahtzee.setBounds(12, 13, 97, 28);
@@ -87,37 +62,12 @@ public class ScorecardGUI extends JFrame {
 		lblName.setBounds(121, 22, 185, 16);
 		contentPane.add(lblName);
 		
-//		lowerSecTable = new JTable();
-//		lowerSecTable.setModel(new DefaultTableModel(
-//			new Object[][] {
-//				{"3 of a Kind", null},
-//				{"4 of a Kind", null},
-//				{"Full House", null},
-//				{"Sm. Straight", null},
-//				{"Lg. Straight", null},
-//				{"Yahtzee", null},
-//				{"Chance", null},
-//				{"Total Upper Section", null},
-//				{"Total Lower Section", null},
-//				{"Grand Total", null},
-//			},
-//			new Object[] {
-//				"Button", "Score"
-//			}
-//		));
-//		lowerSecTable.getColumn("Button").setCellRenderer(new ButtonRenderer());
-//		lowerSecTable.getColumn("Button").setCellEditor(
-//	        new ButtonEditor(new JCheckBox(), lowerSecTable));
-//		lowerSecTable.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-//		lowerSecTable.setBounds(12, 270, 308, 160);
-//		contentPane.add(lowerSecTable);
-		
 		JLabel lblUpperSection = new JLabel("Upper Section:");
 		lblUpperSection.setBounds(12, 66, 97, 16);
 		contentPane.add(lblUpperSection);
 		
 		JLabel lblLowerSection = new JLabel("Lower Section:");
-		lblLowerSection.setBounds(12, 252, 97, 16);
+		lblLowerSection.setBounds(12, 289, 97, 16);
 		contentPane.add(lblLowerSection);
 		
 		JLabel lblPlayerName = new JLabel("Player");
@@ -143,7 +93,7 @@ public class ScorecardGUI extends JFrame {
 			System.out.println(dice[i].getRollValue());
 		
 		for (int i = 1; i <= upperBtns.size(); i++){
-			if(scoreCard.upperNum(dice, i) > 0){
+			if(scoreCard.upperNum(dice, i) > 0 && game.players.get(game.currentTurn).selectedCategories[i-1]==0){
 				upperBtns.get(i - 1).setEnabled(true);
 				possibleScore[i - 1] = scoreCard.upperNum(dice, i);
 			} else {
@@ -151,50 +101,50 @@ public class ScorecardGUI extends JFrame {
 			}
 		}
 		
-		if(scoreCard.ofAKind(dice, 3)){
+		if(scoreCard.ofAKind(dice, 3) && game.players.get(game.currentTurn).selectedCategories[6]==0){
 			lowerBtns.get(0).setEnabled(true);
 //			possibleScore[6] = scoreCard.totalDice(dice);
 		}else{
 			lowerBtns.get(0).setEnabled(false);
 		}
 		
-		if(scoreCard.ofAKind(dice, 4)){
+		if(scoreCard.ofAKind(dice, 4) && game.players.get(game.currentTurn).selectedCategories[7]==0){
 			lowerBtns.get(1).setEnabled(true);
 //			possibleScore[7] = scoreCard.totalDice(dice);
 		}else{
 			lowerBtns.get(1).setEnabled(false);
 			//possibleScore[6] = 0;
 		}
-		if(scoreCard.isfullHouse(dice)){
+		if(scoreCard.isfullHouse(dice) && game.players.get(game.currentTurn).selectedCategories[8]==0){
 			lowerBtns.get(2).setEnabled(true);
 			possibleScore[8] = 25;
 		}else
 			lowerBtns.get(2).setEnabled(false);
 		
-		if(scoreCard.isStraight(dice, 4)){
+		if(scoreCard.isStraight(dice, 4) && game.players.get(game.currentTurn).selectedCategories[9]==0){
 			lowerBtns.get(3).setEnabled(true);
 			possibleScore[9] = 30;
 		}else
 			lowerBtns.get(3).setEnabled(false);
 		
-		if(scoreCard.isStraight(dice, 5)){
+		if(scoreCard.isStraight(dice, 5) && game.players.get(game.currentTurn).selectedCategories[10]==0){
 			lowerBtns.get(4).setEnabled(true);
 			possibleScore[10] = 40;
 		}else
 			lowerBtns.get(4).setEnabled(false);
 		
-//		if(scoreCard.yahtzee(dice)){
-//			lowerBtns.get(5).setEnabled(true);
-//			possibleScore[11] = 50;
-//		}else
-//			lowerBtns.get(5).setEnabled(false);
-//		
-//		if(scoreCard.chance()){
-//			lowerBtns.get(6).setEnabled(true);
-//			possibleScore[12] = scoreCard.totalDice(dice);
-//		}else
-//			lowerBtns.get(6).setEnabled(false);
-//		
+		if(scoreCard.yahtzee(dice) && game.players.get(game.currentTurn).selectedCategories[11]==0){
+			lowerBtns.get(5).setEnabled(true);
+			possibleScore[11] = 50;
+		}else
+			lowerBtns.get(5).setEnabled(false);
+		
+		if(scoreCard.chance() && game.players.get(game.currentTurn).selectedCategories[12]==0){
+			lowerBtns.get(6).setEnabled(true);
+			possibleScore[12] = scoreCard.totalDice(dice);
+		}else
+			lowerBtns.get(6).setEnabled(false);
+		
 	}
 	
 	private void createArrayBtnList(String[] arrayOfNames, ArrayList<JButton> btnArrayList
@@ -204,15 +154,27 @@ public class ScorecardGUI extends JFrame {
 			btn.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
+					
+					//Make sure the current turn of the players 
+					//is not greater than the amt of players
+					if(game.currentTurn >= game.players.size()){
+						game.currentTurn = 0;
+					}
 
 					if(btnArrayList.get(0).getText()== upperSecNames[0]){
-						System.out.println(btnArrayList.indexOf(btn));
 						upperLbls.get(btnArrayList.indexOf(btn)).setText(Integer.toString(possibleScore[btnArrayList.indexOf(btn)]));
+
+						//set the categories that have been selected
+						game.players.get(game.currentTurn).selectedCategories[btnArrayList.indexOf(btn)] = 1;
 					}else{
-						lowerLbls.get(btnArrayList.indexOf(btn)).setText(Integer.toString(possibleScore[btnArrayList.indexOf(btn)-6]));
+						lowerLbls.get(btnArrayList.indexOf(btn)).setText(Integer.toString(possibleScore[btnArrayList.indexOf(btn)+6]));
+						
+						//set the categories that have been selected
+						game.players.get(game.currentTurn).selectedCategories[btnArrayList.indexOf(btn)+6] = 1;
 					}
-					//set the categories that have been selected
-					game.selectedCategories[btnArrayList.indexOf(btn)] = 1;
+					
+					//Go to next players turn
+					game.currentTurn++;
 				}
 			});
 			btnArrayList.add(btn);
@@ -231,97 +193,4 @@ public class ScorecardGUI extends JFrame {
 		}
 	}
 }
-
-//class ButtonRenderer extends JButton implements TableCellRenderer {
-//
-//	  public ButtonRenderer() {
-//	    setOpaque(true);
-//	  }
-//
-//	  public Component getTableCellRendererComponent(JTable table, Object value,
-//	      boolean isSelected, boolean hasFocus, int row, int column) {
-//	    if (isSelected) {
-//	      setForeground(table.getSelectionForeground());
-//	      setBackground(table.getSelectionBackground());
-//	    } else {
-//	      setForeground(table.getForeground());
-//	      setBackground(UIManager.getColor("Button.background"));
-//	    }
-//	    setText((value == null) ? "" : value.toString());
-//	    return this;
-//	  }
-//}
-
-//class ButtonEditor extends DefaultCellEditor {
-//	  protected JButton button;	 
-//	  
-//	  private JTable btnTable;
-//
-//	  private String label;
-//
-//	  private boolean isPushed;
-//	  
-//	  private int rowPosition;
-//
-//	  public ButtonEditor(JCheckBox checkBox, JTable table) {
-//	    super(checkBox);
-//	    btnTable = table;
-//	    button = new JButton();
-//	    button.setOpaque(true);
-//	    button.addActionListener(new ActionListener() {
-//	      public void actionPerformed(ActionEvent e) {
-//	        fireEditingStopped();
-//	      }
-//	    });
-//	  }
-//
-//	  public Component getTableCellEditorComponent(JTable table, Object value,
-//	      boolean isSelected, int row, int column) {
-//	    if (isSelected) {
-//	      button.setForeground(table.getSelectionForeground());
-//	      button.setBackground(table.getSelectionBackground());
-//	    } else {
-//	      button.setForeground(table.getForeground());
-//	      button.setBackground(table.getBackground());
-//	    }
-//	    rowPosition=row;	    
-//	    label = (value == null) ? "" : value.toString();
-//	    System.out.println(label + ": row ="+ rowPosition + ", col = "+ column);
-//	    button.setText(label);
-//	    isPushed = true;
-//	    return button;
-//	  }
-//
-//	  public Object getCellEditorValue() {
-//	    if (isPushed) {
-//	      // 
-//	      // 
-//	      //JOptionPane.showMessageDialog(button, label + ": Add Score!");
-//	      // System.out.println(label + ": Add Here!");
-////	      btnTable.setValueAt("2", rowPosition, 1);
-////	      button.setEnabled(false);
-//	    	setRowScore();
-//	    }
-//	    isPushed = false;
-//	    return new String(label);
-//	  }
-//
-//	  public boolean stopCellEditing() {
-//	    isPushed = false;
-//	    return super.stopCellEditing();
-//	  }
-//
-//	  protected void fireEditingStopped() {
-//	    super.fireEditingStopped();
-//	  }
-//	  
-//	  private void setRowScore(){
-//		  btnTable.setValueAt("Score", rowPosition, 1);
-//		  //need to disable button here
-//		  
-//	  }
-//}
-
-
-
 

@@ -80,6 +80,10 @@ public class GameGUI extends JFrame {
 				if(rollCount == 3){
 					rollDieBtn.setEnabled(false);
 				}
+				
+				if(game.currentTurn >= game.players.size()){
+					game.currentTurn = 0;
+				}
 				scoreCards.get(game.currentTurn).notifyScorecard(game.dice);
 				
 			}
