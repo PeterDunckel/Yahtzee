@@ -18,7 +18,10 @@ public class Die {
 	public Die(){
 		rollEnabled = true;
 	}
-
+	
+	//---------
+	// Roll Die
+	//---------
 	public void rollDie() {
 		Random rand = new Random();
 		rollValue = rand.nextInt(SIDES) + 1;
