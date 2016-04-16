@@ -10,14 +10,20 @@ import java.util.*;
 
 public class Game {
 	
+	private static Game game = new Game();
+	
 	public Die[] dice = new Die[5];
 	public ArrayList<Player> players = new ArrayList<Player>();
 	public int currentTurn;
 	
-	public Game(){
+	private Game(){
 		
 		loadDice();
 		currentTurn = 0;
+	}
+	
+	public static Game getGameSingleton(){
+		return game;
 	}
 	
 	public void rollDice(){

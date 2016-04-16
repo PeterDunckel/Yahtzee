@@ -29,7 +29,7 @@ public class GameGUI extends JFrame {
 	private JButton dieFive;
 	private JButton[] dieButtons = new JButton[5];
 	
-	private Game game = new Game();
+	private Game game = Game.getGameSingleton();
 	private JPanel contentPane;
 	private JButton addPlayerBtn;
 	private JLabel MessageLbl;
