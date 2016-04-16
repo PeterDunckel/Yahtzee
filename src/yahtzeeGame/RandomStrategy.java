@@ -28,5 +28,4 @@ public class RandomStrategy implements Strategy{
 		Random rand = new Random();
 		return rand.nextInt(13);
 	}
-	
 }
