@@ -5,9 +5,6 @@ public class OfAKinderStrategy implements Strategy {
 	@Override
 	public int[] pickDiceToRoll(Die[] dice) {
 		
-		
-		
-		
 		return null;
 	}
 

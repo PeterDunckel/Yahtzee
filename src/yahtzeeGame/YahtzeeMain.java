@@ -6,6 +6,9 @@ import javax.swing.JButton;
 
 public class YahtzeeMain {
 
+	//------------
+	// Main Method
+	//------------
 	public static void main(String[] args) {
 		
 		EventQueue.invokeLater(new Runnable() {
