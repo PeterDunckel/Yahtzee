@@ -41,6 +41,8 @@ public class ScorecardGUI extends JFrame {
 	private ScoreCard scoreCard = new ScoreCard();
 	private int[] possibleScore = new int[13];
 
+	Game game = Game.getGameSingleton();
+
 	/**
 	 * Create the frame.
 	 */
@@ -209,6 +211,8 @@ public class ScorecardGUI extends JFrame {
 					}else{
 						lowerLbls.get(btnArrayList.indexOf(btn)).setText(Integer.toString(possibleScore[btnArrayList.indexOf(btn)-6]));
 					}
+					//set the categories that have been selected
+					game.selectedCategories[btnArrayList.indexOf(btn)] = 1;
 				}
 			});
 			btnArrayList.add(btn);

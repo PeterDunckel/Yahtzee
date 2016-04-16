@@ -16,6 +16,7 @@ public class Game {
 	public Die[] dice = new Die[5];
 	public ArrayList<Player> players = new ArrayList<Player>();
 	public int currentTurn;
+	public int[] selectedCategories = new int[13];
 	
 	private Game(){
 		
@@ -52,5 +53,5 @@ public class Game {
 			dice[i] = d;
 		}
 	}
-
+	
 }
