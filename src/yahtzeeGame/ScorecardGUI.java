@@ -26,6 +26,7 @@ import javax.swing.border.TitledBorder;
 
 public class ScorecardGUI extends JFrame {
 
+	private static final int BONUS = 35;
 	private JPanel contentPane;
 	private JTable upperSecTable;
 	private JTable lowerSecTable;
@@ -41,13 +42,33 @@ public class ScorecardGUI extends JFrame {
 	private ScoreCard scoreCard = new ScoreCard();
 	private int[] possibleScore = new int[13];
 	Game game = Game.getGameSingleton();
+	
+	//These are the start position and specs for the different widgets
+	private int strtBtnXpos =12;
+	private int strtLblXpos =150;	
+	private int strtWidgetYpos =83;
+	private int widgetHeight = 125;
+	private int widgetWidth =25;
+	
+	//for setting the score fields 
+	private int upperTotalScore;
+	private int lowerTotalScore;
+	private boolean isBonusScore;
+	
+	//Score Labels
+	private JLabel lblSubTotalScoreUpper;
+	private JLabel lblBonus;
+	private JLabel lblTotalUpper;
+	private JLabel lblLowerSectionTotal;
+	private JLabel lblUpperSectionTotal;
+	private JLabel lblGrandTotal;
 
 	/**
 	 * Create the frame.
 	 */
 	public ScorecardGUI(String playerName) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 350, 580);
+		setBounds(100, 100, 350, 700);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -67,19 +88,43 @@ public class ScorecardGUI extends JFrame {
 		contentPane.add(lblUpperSection);
 		
 		JLabel lblLowerSection = new JLabel("Lower Section:");
-		lblLowerSection.setBounds(12, 289, 97, 16);
+		lblLowerSection.setBounds(12, strtWidgetYpos+250, 97, 16);
 		contentPane.add(lblLowerSection);
 		
 		JLabel lblPlayerName = new JLabel("Player");
 		lblPlayerName.setBounds(203, 22, 72, 16);
 		contentPane.add(lblPlayerName);
 		lblPlayerName.setText(playerName);
-				
-		createArrayBtnList(upperSecNames,upperBtns, 12,83,125,25);
-		createArrayLblList(upperBtns,upperLbls, 150,83,125,25);
 		
-		createArrayBtnList(lowerSecNames,lowerBtns, 12, 269, 125, 25);
-		createArrayLblList(lowerBtns,lowerLbls, 150, 269, 125, 25);
+		lblSubTotalScoreUpper = new JLabel("TOTAL SCORE");
+		lblSubTotalScoreUpper.setBounds(12, strtWidgetYpos+(widgetWidth*6), widgetHeight, widgetWidth);
+		contentPane.add(lblSubTotalScoreUpper);
+		
+		lblBonus = new JLabel("BONUS");
+		lblBonus.setBounds(12, strtWidgetYpos+(widgetWidth*7), widgetHeight, widgetWidth);
+		contentPane.add(lblBonus);
+		
+		lblTotalUpper = new JLabel("TOTAL");
+		lblTotalUpper.setBounds(12, strtWidgetYpos+(widgetWidth*8), widgetHeight, widgetWidth);
+		contentPane.add(lblTotalUpper);
+		
+		lblLowerSectionTotal = new JLabel("LOWER SECT TOTAL");
+		lblLowerSectionTotal.setBounds(12, strtWidgetYpos+(widgetWidth*7)+275, widgetHeight, widgetWidth);
+		contentPane.add(lblLowerSectionTotal);
+		
+		lblUpperSectionTotal = new JLabel("UPPER SECT TOTAL");
+		lblUpperSectionTotal.setBounds(12, strtWidgetYpos+(widgetWidth*8)+275, widgetHeight, widgetWidth);
+		contentPane.add(lblUpperSectionTotal);
+		
+		lblGrandTotal = new JLabel("GRAND TOTAL");
+		lblGrandTotal.setBounds(12, strtWidgetYpos+(widgetWidth*9)+275, widgetHeight, widgetWidth);
+		contentPane.add(lblGrandTotal);
+				
+		createArrayBtnList(upperSecNames,upperBtns, strtBtnXpos,strtWidgetYpos,widgetHeight,widgetWidth);
+		createArrayLblList(upperBtns,upperLbls, strtLblXpos,strtWidgetYpos,widgetHeight,widgetWidth);
+		
+		createArrayBtnList(lowerSecNames,lowerBtns, strtBtnXpos,strtWidgetYpos+275,widgetHeight,widgetWidth);
+		createArrayLblList(lowerBtns,lowerLbls, strtLblXpos, strtWidgetYpos+275,widgetHeight,widgetWidth);
 				
 	}
 	
@@ -87,7 +132,6 @@ public class ScorecardGUI extends JFrame {
 	// Notify Score Card
 	//------------------
 	void notifyScorecard(Die[] dice){
-		
 		
 		for (int i = 0; i < dice.length; i++)
 			System.out.println(dice[i].getRollValue());
@@ -149,6 +193,8 @@ public class ScorecardGUI extends JFrame {
 	
 	private void createArrayBtnList(String[] arrayOfNames, ArrayList<JButton> btnArrayList
 			,int x, int y, int height, int width){
+		
+		//position buttons on frame
 		for(int i=0; i<arrayOfNames.length; i++){
 			JButton btn = new JButton(arrayOfNames[i]);
 			btn.addMouseListener(new MouseAdapter() {
@@ -173,6 +219,12 @@ public class ScorecardGUI extends JFrame {
 						game.players.get(game.currentTurn).selectedCategories[btnArrayList.indexOf(btn)+6] = 1;
 					}
 					
+					if(areAllBtnsSelected()){
+						getUpperTotalScore();
+						getLowerTotalScore();
+						setAllScoreFields();
+					}
+					
 					//Go to next players turn
 					game.currentTurn++;
 				}
@@ -182,15 +234,56 @@ public class ScorecardGUI extends JFrame {
 			contentPane.add(btnArrayList.get(i));
 		}
 	}
-	
+
 	private void createArrayLblList(ArrayList<JButton> btnArrayList, ArrayList<JLabel> lblArrayList
 			,int x, int y, int height, int width){
-		for(int i=0; i<btnArrayList.size(); i++){
+		//position labels on frame
+		for(int i=0; i<btnArrayList.size()+3; i++){
 			lblArrayList.add(new JLabel(""));
 			lblArrayList.get(i).setBounds(x,y+(width*i),height,width);
 			lblArrayList.get(i).setBorder(BorderFactory.createLineBorder(Color.black));
 			contentPane.add(lblArrayList.get(i));
 		}
+	}
+	
+	protected void setAllScoreFields() {
+		if(isBonusScore){
+			lblSubTotalScoreUpper.setText(String.valueOf(upperTotalScore-BONUS));
+			lblBonus.setText(String.valueOf(BONUS));
+		}else{
+			lblSubTotalScoreUpper.setText(String.valueOf(upperTotalScore));
+			lblBonus.setText("0");
+		}
+		lblTotalUpper.setText(String.valueOf(upperTotalScore));
+		lblLowerSectionTotal.setText(String.valueOf(lowerTotalScore));
+		lblUpperSectionTotal.setText(String.valueOf(upperTotalScore));
+		lblGrandTotal.setText(String.valueOf(upperTotalScore+lowerTotalScore));		
+	}
+
+	protected void getLowerTotalScore() {
+		for(JLabel lbl: lowerLbls ){
+			lowerTotalScore += Integer.parseInt(lbl.getText());
+		}
+	}
+
+	protected void getUpperTotalScore() {
+		for(JLabel lbl: upperLbls ){
+			upperTotalScore += Integer.parseInt(lbl.getText());
+		}
+		if(upperTotalScore >= 63){
+			upperTotalScore += BONUS;
+			isBonusScore = true;
+		}
+		
+	}
+	
+	private boolean areAllBtnsSelected(){
+		for(int i=0; i<game.players.get(game.currentTurn).selectedCategories.length; i++){
+			if(game.players.get(game.currentTurn).selectedCategories[i] ==0){
+				return false;
+			}
+		}
+		return true;
 	}
 }
 

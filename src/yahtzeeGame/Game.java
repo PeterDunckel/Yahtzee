@@ -16,9 +16,10 @@ public class Game {
 	public Die[] dice = new Die[5];
 	public ArrayList<Player> players = new ArrayList<Player>();
 	public int currentTurn;
+	public static boolean isNextTurn; //for reseting the gameGUI when next players turn
 	
 	private Game(){
-		
+		isNextTurn = false;
 		loadDice();
 		currentTurn = 0;
 	}
