@@ -46,7 +46,7 @@ public class GameGUI extends JFrame {
 	 */
 	public GameGUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 335, 238);
+		setBounds(100, 100, 353, 240);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -55,6 +55,13 @@ public class GameGUI extends JFrame {
 		// initialize variables
 		rollCount = 0;
 		playerCount = 0;
+		
+		MessageLbl = new JLabel("Get started by adding players.");
+		MessageLbl.setHorizontalAlignment(SwingConstants.CENTER);
+		MessageLbl.setForeground(Color.BLACK);
+		MessageLbl.setBackground(Color.WHITE);
+		MessageLbl.setBounds(16, 40, 298, 29);
+		contentPane.add(MessageLbl);
 		
 		//----------------------
 		// Die One Button Tapped
@@ -75,8 +82,10 @@ public class GameGUI extends JFrame {
 		rollDieBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("Can Roll: "+canRoll);
 				if(canRoll){
+					if(addPlayerBtn.isEnabled()){
+						addPlayerBtn.setEnabled(false);
+					}
 					game.rollDice();
 					displayDice();
 					rollCount++;
@@ -88,6 +97,10 @@ public class GameGUI extends JFrame {
 						game.currentTurn = 0;
 					}
 					scoreCards.get(game.currentTurn).notifyScorecard(game.dice);
+					
+					MessageLbl.setText(game.players.get(game.currentTurn).getName()+" has "+(3-rollCount)+" rolls left.");
+				}else{
+					MessageLbl.setText(game.players.get(game.currentTurn).getName()+" must select score!");
 				}
 			}
 		});
@@ -199,14 +212,7 @@ public class GameGUI extends JFrame {
 		});
 		addPlayerBtn.setBounds(202, 6, 117, 29);
 		contentPane.add(addPlayerBtn);
-		
-		MessageLbl = new JLabel("Message Label");
-		MessageLbl.setHorizontalAlignment(SwingConstants.CENTER);
-		MessageLbl.setForeground(Color.BLACK);
-		MessageLbl.setBackground(Color.WHITE);
-		MessageLbl.setBounds(16, 40, 298, 29);
-		contentPane.add(MessageLbl);
-		
+				
 //		//---------------------------
 //		// Restart Game Button Tapped
 //		//---------------------------

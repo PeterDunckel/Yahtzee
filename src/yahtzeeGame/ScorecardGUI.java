@@ -10,6 +10,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -35,6 +36,8 @@ public class ScorecardGUI extends JFrame {
 	GameGUI gameGUI = new GameGUI();
 	Game game = Game.getGameSingleton();
 	private int rollCount;
+	private String winner;
+	private static int finalTurnsCounter=1;
 	
 	//These are the start position and specs for the different widgets
 	private int strtBtnXpos =12;
@@ -146,6 +149,7 @@ public class ScorecardGUI extends JFrame {
 		
 		if(scoreCard.ofAKind(dice, 3) && game.players.get(game.currentTurn).selectedCategories[6]==0){
 			lowerBtns.get(0).setEnabled(true);
+			possibleScore[6] = scoreCard.totalDice(dice);
 		}else if( rollCount == 3 && game.players.get(game.currentTurn).selectedCategories[6]==0){
 			lowerBtns.get(0).setBackground(new Color(200,50,50));
 			lowerBtns.get(0).setEnabled(true);
@@ -156,6 +160,7 @@ public class ScorecardGUI extends JFrame {
 		
 		if(scoreCard.ofAKind(dice, 4) && game.players.get(game.currentTurn).selectedCategories[7]==0){
 			lowerBtns.get(1).setEnabled(true);
+			possibleScore[7] = scoreCard.totalDice(dice);
 		}else if( rollCount == 3 && game.players.get(game.currentTurn).selectedCategories[7]==0){
 			lowerBtns.get(1).setBackground(new Color(200,50,50));
 			lowerBtns.get(1).setEnabled(true);
@@ -243,11 +248,18 @@ public class ScorecardGUI extends JFrame {
 						}
 						
 						if(areAllBtnsSelected()){
+							
 							getUpperTotalScore();
 							getLowerTotalScore();
 							setAllScoreFields();
+							game.players.get(game.currentTurn).scoreCard.setTotalScore(upperTotalScore+lowerTotalScore);
+							
+							if(game.players.size() <= finalTurnsCounter){
+								determineWinner();
+								JOptionPane.showMessageDialog(null, "Congratulations "+winner+"! You won!");
+							}
+							finalTurnsCounter++;
 						}
-						
 						//reset rollCount
 						gameGUI.resetForNextPlayer();
 						
@@ -264,6 +276,15 @@ public class ScorecardGUI extends JFrame {
 			btn.setEnabled(false);
 			btnArrayList.get(i).setBounds(x,y+(width*i),height,width);
 			contentPane.add(btnArrayList.get(i));
+		}
+	}
+
+	private void determineWinner() {
+		int topScore = 0;
+		for(int i=0; i<game.players.size(); i++){
+			if(game.players.get(i).scoreCard.getTotalScore() > topScore){
+				winner = game.players.get(i).getName();
+			};
 		}
 	}
 

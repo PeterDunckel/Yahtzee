@@ -42,6 +42,10 @@ public class ScoreCard {
 		return totalScore;
 	}
 	
+	public void setTotalScore(int grandTotalScore){
+		this.totalScore = grandTotalScore;
+	}
+	
 	public int getTotalUpperScore(){
 		int sum = 0;
 		
