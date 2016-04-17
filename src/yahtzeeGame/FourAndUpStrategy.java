@@ -31,43 +31,68 @@ public class FourAndUpStrategy implements Strategy{
 		if(rollCount >= 3){
 			
 			for(int i=1; i<=6; i++, indexOfCategory++){
-				if(scorecard.upperNum(dice, i)>=maxScore){
+				if(scorecard.upperNum(dice, i)>=maxScore 
+						&& game.players.get(game.currentTurn).selectedCategories[i-1] != 1){
+					maxScore = scorecard.upperNum(dice, i);
 					indexOfCategory = i-1;
 				};
 			}
 			
 			if(scorecard.ofAKind(dice, 3)){
-				if(scorecard.totalDice(dice) >= maxScore){
+				if(scorecard.totalDice(dice) >= maxScore
+						&& game.players.get(game.currentTurn).selectedCategories[6] != 1){
+					maxScore = scorecard.totalDice(dice);
 					indexOfCategory = 6;
 				}
 			}
 			
 			if(scorecard.ofAKind(dice, 4)){
-				if(scorecard.totalDice(dice) >= maxScore){
+				if(scorecard.totalDice(dice) >= maxScore
+						&& game.players.get(game.currentTurn).selectedCategories[7] != 1){
+					maxScore = scorecard.totalDice(dice);
 					indexOfCategory = 7;
 				}
 			}
 			
 			if(scorecard.isfullHouse(dice)){
-				if(scorecard.totalDice(dice) >= maxScore){
+				if(25 >= maxScore
+						&& game.players.get(game.currentTurn).selectedCategories[8] != 1){
+					maxScore = 25;
 					indexOfCategory = 8;
 				}
 			}
 			
 			if(scorecard.isStraight(dice, 4)){
-				if(scorecard.totalDice(dice) >= maxScore){
+				if(30 >= maxScore
+						&& game.players.get(game.currentTurn).selectedCategories[9] != 1){
+					maxScore = 30;
 					indexOfCategory = 9;
 				}
 			}
 			
 			if(scorecard.isStraight(dice, 5)){
-				if(scorecard.totalDice(dice) >= maxScore){
+				if(40 >= maxScore
+						&& game.players.get(game.currentTurn).selectedCategories[10] != 1){
+					maxScore = 40;
 					indexOfCategory = 10;
 				}
 			}
 			
-			if(scorecard.yahtzee(dice)){
+			if(scorecard.yahtzee(dice)
+					&& game.players.get(game.currentTurn).selectedCategories[11] != 1){
+				if(40 >= maxScore
+						&& game.players.get(game.currentTurn).selectedCategories[10] != 1){
+					maxScore = 50;
 				indexOfCategory = 11;
+				}
+			}
+			
+			if(scorecard.chance()){
+				if(scorecard.totalDice(dice) >= maxScore
+						&& game.players.get(game.currentTurn).selectedCategories[12] != 1){
+					maxScore = scorecard.totalDice(dice);
+					indexOfCategory = 12;
+				}
 			}
 			
 			rollCount =0;

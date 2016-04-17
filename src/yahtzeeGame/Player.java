@@ -4,6 +4,7 @@ public class Player {
 
 	private String name;
 	public ScoreCard scoreCard;
+	public int[] selectedCategories = new int[13];
 	
 	public Player(String name){
 		this.name = name;
