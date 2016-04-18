@@ -114,10 +114,13 @@ public class GameGUI extends JFrame implements WindowFocusListener{
 						game.currentTurn = 0;
 					}
 					scoreCards.get(game.currentTurn).notifyScorecard(game.dice);
-					
-					MessageLbl.setText(game.players.get(game.currentTurn).getName()+" has "+(3-rollCount)+" rolls left.");
+					if(game.players.get(game.currentTurn).getClass() == Human.class){
+						MessageLbl.setText(((Human) game.players.get(game.currentTurn)).getName()+" has "+(3-rollCount)+" rolls left.");
+					}
 				}else{
-					MessageLbl.setText(game.players.get(game.currentTurn).getName()+" must select score!");
+					if(game.players.get(game.currentTurn).getClass() == Human.class){
+						MessageLbl.setText(((Human) game.players.get(game.currentTurn)).getName()+" must select score!");
+					}
 				}
 			}
 		});
@@ -225,8 +228,7 @@ public class GameGUI extends JFrame implements WindowFocusListener{
 				//Player Creation
 				playerName = JOptionPane.showInputDialog(
                         "What is your name?", null);				
-				Player newPlayer = new Player(playerName);
-				newPlayer.setIsHuman(true);
+				Player newPlayer = new Human(playerName);
 				game.players.add(newPlayer);
 				
 				if(playerName != null){
@@ -259,9 +261,9 @@ public class GameGUI extends JFrame implements WindowFocusListener{
 			public void mouseClicked(MouseEvent arg0) {
 				//Player Creation
 				playerName = JOptionPane.showInputDialog(
-                        "What is your name?", null);				
-				Player newPlayer = new Player(playerName+" A.I.");
-				newPlayer.setIsHuman(false);
+                        "What is your name?", null);	
+				Strategy fourAndUp = new FourAndUpStrategy();
+				Player newPlayer = new Computer(fourAndUp);
 				game.players.add(newPlayer);
 				
 				if(playerName != null){
@@ -300,7 +302,7 @@ public class GameGUI extends JFrame implements WindowFocusListener{
 				hasGameStarted=true;
 				
 				//if 1st Player is A.I. perform click
-				if(!(game.players.get(0).getIsHuman())){
+				if(game.players.get(0).getClass() == Computer.class){
 					//User window focus to perform click
 //					gameGUI.setVisible(false);
 //					gameGUI.setVisible(true);
@@ -349,9 +351,9 @@ public class GameGUI extends JFrame implements WindowFocusListener{
 			}
 			scoreCards.get(game.currentTurn).notifyScorecard(game.dice);
 			
-			MessageLbl.setText(game.players.get(game.currentTurn).getName()+" has "+(3-rollCount)+" rolls left.");
+			MessageLbl.setText("Computer has "+(3-rollCount)+" rolls left.");
 		}else{
-			MessageLbl.setText(game.players.get(game.currentTurn).getName()+" must select score!");
+			MessageLbl.setText("Computer must select score!");
 		}
 		
 	}
@@ -415,7 +417,7 @@ public class GameGUI extends JFrame implements WindowFocusListener{
 	public void windowGainedFocus(WindowEvent arg0) {
 		//On window focus if player is A.I. roll die
 		if(game.players.size() > 0){
-			if(!(game.players.get(game.currentTurn).getIsHuman()) && hasGameStarted){
+			if((game.players.get(0).getClass() == Computer.class) && hasGameStarted){
 				performComputerMove();
 			}
 		}
