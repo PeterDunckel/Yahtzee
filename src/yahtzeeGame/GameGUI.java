@@ -28,23 +28,25 @@ public class GameGUI extends JFrame {
 	private JButton dieFour;
 	private JButton dieFive;
 	private JButton[] dieButtons = new JButton[5];
+	private JButton rollDieBtn;
 	
 	private Game game = Game.getGameSingleton();
 	private JPanel contentPane;
 	private JButton addPlayerBtn;
 	private JLabel MessageLbl;
 	private JButton btnRestartGame;
-	private int rollCount;
+	private static int rollCount;
 	private ArrayList<ScorecardGUI> scoreCards = new ArrayList<ScorecardGUI>();
 	private String playerName;
 	private int playerCount;
+	private static boolean canRoll = false;
 
 	/**
 	 * Create the frame.
 	 */
 	public GameGUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 335, 238);
+		setBounds(100, 100, 353, 240);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -53,6 +55,13 @@ public class GameGUI extends JFrame {
 		// initialize variables
 		rollCount = 0;
 		playerCount = 0;
+		
+		MessageLbl = new JLabel("Get started by adding players.");
+		MessageLbl.setHorizontalAlignment(SwingConstants.CENTER);
+		MessageLbl.setForeground(Color.BLACK);
+		MessageLbl.setBackground(Color.WHITE);
+		MessageLbl.setBounds(16, 40, 298, 29);
+		contentPane.add(MessageLbl);
 		
 		//----------------------
 		// Die One Button Tapped
@@ -69,27 +78,36 @@ public class GameGUI extends JFrame {
 		//-----------------------
 		// Roll Die Button Tapped
 		//-----------------------
-		JButton rollDieBtn = new JButton("Roll Dice");
+		rollDieBtn = new JButton("Roll Dice");
 		rollDieBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-
-				game.rollDice();
-				displayDice();
-				rollCount++;
-				if(rollCount == 3){
-					rollDieBtn.setEnabled(false);
+				if(canRoll){
+					if(addPlayerBtn.isEnabled()){
+						addPlayerBtn.setEnabled(false);
+					}
+					game.rollDice();
+					displayDice();
+					rollCount++;
+					if(rollCount == 3){
+						canRoll = false;
+					}
+					
+					if(game.currentTurn >= game.players.size()){
+						game.currentTurn = 0;
+					}
+					scoreCards.get(game.currentTurn).notifyScorecard(game.dice);
+					
+					MessageLbl.setText(game.players.get(game.currentTurn).getName()+" has "+(3-rollCount)+" rolls left.");
+				}else{
+					MessageLbl.setText(game.players.get(game.currentTurn).getName()+" must select score!");
 				}
-				
-				if(game.currentTurn >= game.players.size()){
-					game.currentTurn = 0;
-				}
-				scoreCards.get(game.currentTurn).notifyScorecard(game.dice);
-				
 			}
 		});
 		rollDieBtn.setBounds(16, 139, 298, 50);
+		rollDieBtn.setEnabled(false);
 		contentPane.add(rollDieBtn);
+		
 		dieOne.setBounds(16, 81, 50, 50);
 		dieOne.setFocusPainted(false);
 		contentPane.add(dieOne);
@@ -187,33 +205,29 @@ public class GameGUI extends JFrame {
 				if(playerCount >= 4){
 					addPlayerBtn.setEnabled(false);
 				}				
+				
+				rollDieBtn.setEnabled(true);
+				canRoll=true;
 			}
 		});
 		addPlayerBtn.setBounds(202, 6, 117, 29);
 		contentPane.add(addPlayerBtn);
-		
-		MessageLbl = new JLabel("Message Label");
-		MessageLbl.setHorizontalAlignment(SwingConstants.CENTER);
-		MessageLbl.setForeground(Color.BLACK);
-		MessageLbl.setBackground(Color.WHITE);
-		MessageLbl.setBounds(16, 40, 298, 29);
-		contentPane.add(MessageLbl);
-		
-		//---------------------------
-		// Restart Game Button Tapped
-		//---------------------------
-		btnRestartGame = new JButton("Restart Dice");
-		btnRestartGame.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-								
-				rollDieBtn.setEnabled(true);
-				rollCount = 0;
-				resetDice();
-			}
-		});
-		btnRestartGame.setBounds(11, 6, 117, 29);
-		contentPane.add(btnRestartGame);
+				
+//		//---------------------------
+//		// Restart Game Button Tapped
+//		//---------------------------
+//		btnRestartGame = new JButton("Restart Dice");
+//		btnRestartGame.addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mouseClicked(MouseEvent e) {
+//								
+//				rollDieBtn.setEnabled(true);
+//				rollCount = 0;
+//				resetDice();
+//			}
+//		});
+//		btnRestartGame.setBounds(11, 6, 117, 29);
+//		contentPane.add(btnRestartGame);
 	}
 	
 	//---------------------
@@ -243,10 +257,27 @@ public class GameGUI extends JFrame {
 	//-----------
 	// Reset Dice
 	//-----------
+	public void resetForNextPlayer(){
+		canRoll= true;
+		rollCount = 0;
+		resetDice();
+	}
+	
+	//-----------
+	// Reset Dice
+	//-----------
 	private void resetDice(){
 		for(int i = 0; i < 5; i++){
 			dieButtons[i].setText("?");
 			game.dice[i].setRollEnabled(true);
 		}
+	}
+	
+	public int getRollCount() {
+		return rollCount;
+	}
+
+	public void setRollCount(int rollCount) {
+		this.rollCount = rollCount;
 	}
 }

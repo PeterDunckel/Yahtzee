@@ -1,28 +1,20 @@
 package yahtzeeGame;
 
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
-import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
-import javax.swing.UIManager;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
 
 public class ScorecardGUI extends JFrame {
 
@@ -41,7 +33,11 @@ public class ScorecardGUI extends JFrame {
 			,"Lg. Straight","Yahtzee","Chance"};
 	private ScoreCard scoreCard = new ScoreCard();
 	private int[] possibleScore = new int[13];
+	GameGUI gameGUI = new GameGUI();
 	Game game = Game.getGameSingleton();
+	private int rollCount;
+	private String winner;
+	private static int finalTurnsCounter=1;
 	
 	//These are the start position and specs for the different widgets
 	private int strtBtnXpos =12;
@@ -67,6 +63,7 @@ public class ScorecardGUI extends JFrame {
 	 * Create the frame.
 	 */
 	public ScorecardGUI(String playerName) {
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 350, 700);
 		contentPane = new JPanel();
@@ -132,6 +129,7 @@ public class ScorecardGUI extends JFrame {
 	// Notify Score Card
 	//------------------
 	void notifyScorecard(Die[] dice){
+		this.rollCount = gameGUI.getRollCount();
 		
 		for (int i = 0; i < dice.length; i++)
 			System.out.println(dice[i].getRollValue());
@@ -140,54 +138,84 @@ public class ScorecardGUI extends JFrame {
 			if(scoreCard.upperNum(dice, i) > 0 && game.players.get(game.currentTurn).selectedCategories[i-1]==0){
 				upperBtns.get(i - 1).setEnabled(true);
 				possibleScore[i - 1] = scoreCard.upperNum(dice, i);
-			} else {
+			}else if( rollCount == 3 && game.players.get(game.currentTurn).selectedCategories[i-1]==0){
+				upperBtns.get(i-1).setBackground(new Color(200,50,50));
+				upperBtns.get(i - 1).setEnabled(true);
+				possibleScore[i - 1] = 0;
+			}else {
 				upperBtns.get(i - 1).setEnabled(false);
 			}
 		}
 		
 		if(scoreCard.ofAKind(dice, 3) && game.players.get(game.currentTurn).selectedCategories[6]==0){
 			lowerBtns.get(0).setEnabled(true);
-//			possibleScore[6] = scoreCard.totalDice(dice);
+			possibleScore[6] = scoreCard.totalDice(dice);
+		}else if( rollCount == 3 && game.players.get(game.currentTurn).selectedCategories[6]==0){
+			lowerBtns.get(0).setBackground(new Color(200,50,50));
+			lowerBtns.get(0).setEnabled(true);
+			possibleScore[6] = 0;
 		}else{
 			lowerBtns.get(0).setEnabled(false);
 		}
 		
 		if(scoreCard.ofAKind(dice, 4) && game.players.get(game.currentTurn).selectedCategories[7]==0){
 			lowerBtns.get(1).setEnabled(true);
-//			possibleScore[7] = scoreCard.totalDice(dice);
+			possibleScore[7] = scoreCard.totalDice(dice);
+		}else if( rollCount == 3 && game.players.get(game.currentTurn).selectedCategories[7]==0){
+			lowerBtns.get(1).setBackground(new Color(200,50,50));
+			lowerBtns.get(1).setEnabled(true);
+			possibleScore[7] = 0;
 		}else{
 			lowerBtns.get(1).setEnabled(false);
-			//possibleScore[6] = 0;
 		}
 		if(scoreCard.isfullHouse(dice) && game.players.get(game.currentTurn).selectedCategories[8]==0){
 			lowerBtns.get(2).setEnabled(true);
 			possibleScore[8] = 25;
+		}else if( rollCount == 3 && game.players.get(game.currentTurn).selectedCategories[8]==0){
+			lowerBtns.get(2).setBackground(new Color(200,50,50));
+			lowerBtns.get(2).setEnabled(true);
+			possibleScore[8] = 0;
 		}else
 			lowerBtns.get(2).setEnabled(false);
 		
 		if(scoreCard.isStraight(dice, 4) && game.players.get(game.currentTurn).selectedCategories[9]==0){
 			lowerBtns.get(3).setEnabled(true);
 			possibleScore[9] = 30;
+		}else if( rollCount == 3 && game.players.get(game.currentTurn).selectedCategories[9]==0){
+			lowerBtns.get(3).setBackground(new Color(200,50,50));
+			lowerBtns.get(3).setEnabled(true);
+			possibleScore[9] = 0;
 		}else
 			lowerBtns.get(3).setEnabled(false);
 		
 		if(scoreCard.isStraight(dice, 5) && game.players.get(game.currentTurn).selectedCategories[10]==0){
 			lowerBtns.get(4).setEnabled(true);
 			possibleScore[10] = 40;
-		}else
+		}else if( rollCount == 3 && game.players.get(game.currentTurn).selectedCategories[10]==0){
+			lowerBtns.get(4).setBackground(new Color(200,50,50));
+			lowerBtns.get(4).setEnabled(true);
+			possibleScore[10] = 0;
+		}else{
 			lowerBtns.get(4).setEnabled(false);
+		}
 		
 		if(scoreCard.yahtzee(dice) && game.players.get(game.currentTurn).selectedCategories[11]==0){
 			lowerBtns.get(5).setEnabled(true);
 			possibleScore[11] = 50;
-		}else
+		}else if( rollCount == 3 && game.players.get(game.currentTurn).selectedCategories[11]==0){
+			lowerBtns.get(5).setBackground(new Color(200,50,50));
+			lowerBtns.get(5).setEnabled(true);
+			possibleScore[11] = 0;
+		}else{
 			lowerBtns.get(5).setEnabled(false);
+		}
 		
 		if(scoreCard.chance() && game.players.get(game.currentTurn).selectedCategories[12]==0){
 			lowerBtns.get(6).setEnabled(true);
 			possibleScore[12] = scoreCard.totalDice(dice);
-		}else
+		}else{
 			lowerBtns.get(6).setEnabled(false);
+		}
 		
 	}
 	
@@ -200,38 +228,74 @@ public class ScorecardGUI extends JFrame {
 			btn.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					
-					//Make sure the current turn of the players 
-					//is not greater than the amt of players
-					if(game.currentTurn >= game.players.size()){
-						game.currentTurn = 0;
-					}
-
-					if(btnArrayList.get(0).getText()== upperSecNames[0]){
-						upperLbls.get(btnArrayList.indexOf(btn)).setText(Integer.toString(possibleScore[btnArrayList.indexOf(btn)]));
-
-						//set the categories that have been selected
-						game.players.get(game.currentTurn).selectedCategories[btnArrayList.indexOf(btn)] = 1;
-					}else{
-						lowerLbls.get(btnArrayList.indexOf(btn)).setText(Integer.toString(possibleScore[btnArrayList.indexOf(btn)+6]));
+					if(btn.isEnabled()){
+						//Make sure the current turn of the players 
+						//is not greater than the amt of players
+						if(game.currentTurn >= game.players.size()){
+							game.currentTurn = 0;
+						}
+	
+						if(btnArrayList.get(0).getText()== upperSecNames[0]){
+							upperLbls.get(btnArrayList.indexOf(btn)).setText(Integer.toString(possibleScore[btnArrayList.indexOf(btn)]));
+	
+							//set the categories that have been selected
+							game.players.get(game.currentTurn).selectedCategories[btnArrayList.indexOf(btn)] = 1;
+						}else{
+							lowerLbls.get(btnArrayList.indexOf(btn)).setText(Integer.toString(possibleScore[btnArrayList.indexOf(btn)+6]));
+							
+							//set the categories that have been selected
+							game.players.get(game.currentTurn).selectedCategories[btnArrayList.indexOf(btn)+6] = 1;
+						}
 						
-						//set the categories that have been selected
-						game.players.get(game.currentTurn).selectedCategories[btnArrayList.indexOf(btn)+6] = 1;
+						if(areAllBtnsSelected()){
+							
+							getUpperTotalScore();
+							getLowerTotalScore();
+							setAllScoreFields();
+							game.players.get(game.currentTurn).scoreCard.setTotalScore(upperTotalScore+lowerTotalScore);
+							
+							if(game.players.size() <= finalTurnsCounter){
+								determineWinner();
+								JOptionPane.showMessageDialog(null, "Congratulations "+winner+"! You won!");
+							}
+							finalTurnsCounter++;
+						}
+						//reset rollCount
+						gameGUI.resetForNextPlayer();
+						
+						
+						//Disable all buttons and reset their formatting
+						resetBtns();
+						
+						//Go to next players turn
+						game.currentTurn++;
 					}
-					
-					if(areAllBtnsSelected()){
-						getUpperTotalScore();
-						getLowerTotalScore();
-						setAllScoreFields();
-					}
-					
-					//Go to next players turn
-					game.currentTurn++;
 				}
 			});
 			btnArrayList.add(btn);
+			btn.setEnabled(false);
 			btnArrayList.get(i).setBounds(x,y+(width*i),height,width);
 			contentPane.add(btnArrayList.get(i));
+		}
+	}
+
+	private void determineWinner() {
+		int topScore = 0;
+		for(int i=0; i<game.players.size(); i++){
+			if(game.players.get(i).scoreCard.getTotalScore() > topScore){
+				winner = game.players.get(i).getName();
+			};
+		}
+	}
+
+	private void resetBtns() {
+		for(JButton btn: upperBtns){
+			btn.setBackground(null);
+			btn.setEnabled(false);
+		}
+		for(JButton btn: lowerBtns){
+			btn.setBackground(null);
+			btn.setEnabled(false);
 		}
 	}
 
@@ -239,35 +303,37 @@ public class ScorecardGUI extends JFrame {
 			,int x, int y, int height, int width){
 		//position labels on frame
 		for(int i=0; i<btnArrayList.size()+3; i++){
-			lblArrayList.add(new JLabel(""));
-			lblArrayList.get(i).setBounds(x,y+(width*i),height,width);
-			lblArrayList.get(i).setBorder(BorderFactory.createLineBorder(Color.black));
+			lblArrayList.add(new JLabel("", SwingConstants.CENTER));			
+			lblArrayList.get(i).setBounds(x,y+(width*i),height,width);			
+			lblArrayList.get(i).setBorder(BorderFactory.createLineBorder(Color.black));			
 			contentPane.add(lblArrayList.get(i));
 		}
 	}
 	
 	protected void setAllScoreFields() {
 		if(isBonusScore){
-			lblSubTotalScoreUpper.setText(String.valueOf(upperTotalScore-BONUS));
-			lblBonus.setText(String.valueOf(BONUS));
+			upperLbls.get(6).setText(String.valueOf(upperTotalScore-BONUS));
+			upperLbls.get(7).setText(String.valueOf(BONUS));
 		}else{
-			lblSubTotalScoreUpper.setText(String.valueOf(upperTotalScore));
-			lblBonus.setText("0");
+			upperLbls.get(6).setText(String.valueOf(upperTotalScore));
+			upperLbls.get(7).setText("0");
 		}
-		lblTotalUpper.setText(String.valueOf(upperTotalScore));
-		lblLowerSectionTotal.setText(String.valueOf(lowerTotalScore));
-		lblUpperSectionTotal.setText(String.valueOf(upperTotalScore));
-		lblGrandTotal.setText(String.valueOf(upperTotalScore+lowerTotalScore));		
+		upperLbls.get(8).setText(String.valueOf(upperTotalScore));
+		lowerLbls.get(7).setText(String.valueOf(lowerTotalScore));
+		lowerLbls.get(8).setText(String.valueOf(upperTotalScore));
+		lowerLbls.get(9).setText(String.valueOf(upperTotalScore+lowerTotalScore));		
 	}
 
 	protected void getLowerTotalScore() {
 		for(JLabel lbl: lowerLbls ){
+			if(lbl.getText() != "")
 			lowerTotalScore += Integer.parseInt(lbl.getText());
 		}
 	}
 
 	protected void getUpperTotalScore() {
 		for(JLabel lbl: upperLbls ){
+			if(lbl.getText() != "")
 			upperTotalScore += Integer.parseInt(lbl.getText());
 		}
 		if(upperTotalScore >= 63){
