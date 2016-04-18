@@ -48,5 +48,9 @@ public class Die {
 	public boolean getRollEnabled(){
 		return rollEnabled;
 	}
+	
+	public void setRollValue(int value){
+		rollValue = value;
+	}
 }
 

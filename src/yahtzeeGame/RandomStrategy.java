@@ -23,10 +23,17 @@ public class RandomStrategy implements Strategy{
 	@Override
 	public int pickCategory(Die[] dice) {
 		
-		// randomly choose a category
+		Game game = Game.getGameSingleton();
 		
 		Random rand = new Random();
-		return rand.nextInt(13);
+		int num = rand.nextInt(13);
+		
+		// check if category is taken
+		while(game.players.get(game.currentTurn).selectedCategories[num] == 1){
+			num = rand.nextInt(13);
+		}
+		
+		return num;
 	}
 	
 }
