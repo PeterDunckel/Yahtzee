@@ -5,9 +5,6 @@ public class OfAKinderStrategy implements Strategy {
 	@Override
 	public int[] pickDiceToRoll(Die[] dice) {
 		
-<<<<<<< Updated upstream
-		return null;
-=======
 		int[] picked = new int[5];
 		
 		int[] ofKind = new int[6];
@@ -57,7 +54,7 @@ public class OfAKinderStrategy implements Strategy {
 		}
 
 		return picked;
->>>>>>> Stashed changes
+
 	}
 
 	@Override
