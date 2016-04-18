@@ -296,11 +296,15 @@ public class GameGUI extends JFrame implements WindowFocusListener{
 		btnStartGame.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+	
+				hasGameStarted=true;
 				
 				//if 1st Player is A.I. perform click
 				if(!(game.players.get(0).getIsHuman())){
-					rollDieBtn.doClick();
-					rollDieBtn.setText("sgsfg");
+					//User window focus to perform click
+//					gameGUI.setVisible(false);
+//					gameGUI.setVisible(true);
+					performComputerMove();
 				}
 				
 				//disable the ability to add human and computer players
@@ -313,7 +317,8 @@ public class GameGUI extends JFrame implements WindowFocusListener{
 				rollDieBtn.setEnabled(true);
 				canRoll=true;
 				
-				hasGameStarted=true;
+				//Disable this btn
+				btnStartGame.setEnabled(false);
 			}
 		});
 		btnStartGame.setEnabled(false);
@@ -322,10 +327,39 @@ public class GameGUI extends JFrame implements WindowFocusListener{
 	}
 	
 	// Singleton getter
-		public static GameGUI getGameSingleton(){
-			return gameGUI;
-		}
+	public static GameGUI getGameSingleton(){
+		return gameGUI;
+	}
 	
+	private void performComputerMove() {
+		if(canRoll){
+			
+			game.rollDice();
+			displayDice();
+			rollCount++;
+			if(rollCount == 3){
+				canRoll = false;
+			}
+			
+			//Check strategy to pick
+			pickStrategy();
+			
+			if(game.currentTurn >= game.players.size()){
+				game.currentTurn = 0;
+			}
+			scoreCards.get(game.currentTurn).notifyScorecard(game.dice);
+			
+			MessageLbl.setText(game.players.get(game.currentTurn).getName()+" has "+(3-rollCount)+" rolls left.");
+		}else{
+			MessageLbl.setText(game.players.get(game.currentTurn).getName()+" must select score!");
+		}
+		
+	}
+	
+	private void pickStrategy() {
+		
+	}
+
 	//---------------------
 	// Enable Dice for Roll
 	//---------------------
@@ -381,8 +415,8 @@ public class GameGUI extends JFrame implements WindowFocusListener{
 	public void windowGainedFocus(WindowEvent arg0) {
 		//On window focus if player is A.I. roll die
 		if(game.players.size() > 0){
-			if(!(game.players.get(0).getIsHuman()) && hasGameStarted){
-				rollDieBtn.doClick();
+			if(!(game.players.get(game.currentTurn).getIsHuman()) && hasGameStarted){
+				performComputerMove();
 			}
 		}
 		
