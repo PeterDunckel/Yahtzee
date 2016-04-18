@@ -14,6 +14,9 @@ public class UpperSectionerStrategy implements Strategy {
 	ScoreCard scorecard = new ScoreCard();
 	Game game = Game.getGameSingleton();
 	
+	//------------------
+	// Pick Dice to Roll
+	//------------------
 	@Override
 	public int[] pickDiceToRoll(Die[] dice) {
 		
@@ -78,7 +81,10 @@ public class UpperSectionerStrategy implements Strategy {
 		return picked; // returns the picked value and will reroll all others
 
 	}
-
+	
+	//--------------
+	// Pick Category
+	//--------------
 	@Override
 	public int pickCategory(Die[] dice) {
 		
