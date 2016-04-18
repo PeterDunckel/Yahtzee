@@ -15,7 +15,7 @@ public class YahtzeeMain {
 			public void run() {
 				try {
 					
-					GameGUI frame = new GameGUI();
+					GameGUI frame = GameGUI.getGameSingleton();
 					frame.setVisible(true);
 					
 				} catch (Exception e) {

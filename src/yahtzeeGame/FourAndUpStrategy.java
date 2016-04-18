@@ -16,7 +16,8 @@ public class FourAndUpStrategy implements Strategy{
 		int index=0;
 		for(Die d : dice){
 			if(d.getRollValue() < 4){
-				diceToReroll[index] =1;
+				//Set values to indexes of dice to reroll to 1
+				diceToReroll[index] = 1;
 			}
 			index++;
 		}

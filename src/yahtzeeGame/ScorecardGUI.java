@@ -33,7 +33,7 @@ public class ScorecardGUI extends JFrame {
 			,"Lg. Straight","Yahtzee","Chance"};
 	private ScoreCard scoreCard = new ScoreCard();
 	private int[] possibleScore = new int[13];
-	GameGUI gameGUI = new GameGUI();
+	GameGUI gameGUI = GameGUI.getGameSingleton();
 	Game game = Game.getGameSingleton();
 	private int rollCount;
 	private String winner;
