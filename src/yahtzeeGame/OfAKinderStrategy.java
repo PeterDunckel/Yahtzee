@@ -9,37 +9,55 @@ public class OfAKinderStrategy implements Strategy {
 	@Override
 	public int[] pickDiceToRoll(Die[] dice) {
 		
-		int[] picked = {1,1,1,1,1};
+		int[] picked = new int[5];
+		picked[0] = 1;
+		picked[1] = 1;
+		picked[2] = 1;
+		picked[3] = 1;
+		picked[4] = 1;
 		
 		int[] ofKind = new int[6];
+		
+		
+		for(Die d : dice){
+			
+			if(d.getRollValue() == 1){
+				ofKind[0]++;
+			} else if(d.getRollValue() == 2){
+				ofKind[1]++;
+			} else if(d.getRollValue() == 3){
+				ofKind[2]++;
+			} else if(d.getRollValue() == 4){
+				ofKind[3]++;
+			} else if(d.getRollValue() == 5){
+				ofKind[4]++;
+			} else if(d.getRollValue() == 6){
+				ofKind[5]++;
+			}
+			
+		}
 		
 		int index = 0;
 		for(Die d : dice){
 			
 			if(d.getRollValue() == 1){
-				ofKind[0]++;
 				if(ofKind[0] >= 2)
 					picked[index] = 0;
 			} else if(d.getRollValue() == 2){
-				ofKind[1]++;
 				if(ofKind[1] >= 2)
 					picked[index] = 0;
-			} else if(d.getRollValue() == 3){
-				ofKind[2]++;
+			}else if(d.getRollValue() == 3){
 				if(ofKind[2] >= 2)
 					picked[index] = 0;
-			} else if(d.getRollValue() == 4){
-				ofKind[3]++;
+			}else if(d.getRollValue() == 4){
 				if(ofKind[3] >= 2)
 					picked[index] = 0;
-			} else if(d.getRollValue() == 5){
-				ofKind[4]++;
+			}else if(d.getRollValue() == 5){
 				if(ofKind[4] >= 2)
 					picked[index] = 0;
-			} else if(d.getRollValue() == 6){
-				ofKind[5]++;
+			}else if(d.getRollValue() == 6){
 				if(ofKind[5] >= 2)
-					picked[index] = 0;
+				picked[index] = 0;
 			}
 			index++;
 		}
@@ -124,5 +142,34 @@ public class OfAKinderStrategy implements Strategy {
 		}	
 		return indexOfCategory;
 
+	}
+	
+	public static void main(String[] args) {
+		
+		OfAKinderStrategy ofAKinder = new OfAKinderStrategy();
+		
+		Die[] dice = new Die[5];
+		Die die1 = new Die();
+		Die die2 = new Die();
+		Die die3 = new Die();
+		Die die4 = new Die();
+		Die die5 = new Die();
+		die1.setRollValue(1);
+		dice[0] = die1;
+		die2.setRollValue(2);
+		dice[1] = die2;
+		die3.setRollValue(6);
+		dice[2] = die3;
+		die4.setRollValue(2);
+		dice[3] = die4;
+		die5.setRollValue(5);
+		dice[4] = die5;
+		
+		//int[] picked = {0,1,1,0,1};
+		int[] picked = ofAKinder.pickDiceToRoll(dice);
+		
+		for(int val : picked){
+			System.out.println(val);
+		}
 	}
 }
