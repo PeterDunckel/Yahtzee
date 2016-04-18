@@ -14,6 +14,7 @@ public class YahtzeeTest {
 	
 	public OfAKinderStrategy ofAKinder = new OfAKinderStrategy();
 	public FourAndUpStrategy fourAndUp = new FourAndUpStrategy();
+	public UpperSectionerStrategy upperSectioner = new UpperSectionerStrategy();
 	
 	public ScoreCard scoreCard = new ScoreCard();
 	
@@ -40,6 +41,33 @@ public class YahtzeeTest {
 		int[] picked = {1,1,1,0,0};
 		
 		assertArrayEquals(picked, fourAndUp.pickDiceToRoll(dice));
+		
+	}
+	
+	@Test
+	public void testUpperSectionerPickDiceToRoll(){
+		
+		Die[] dice = new Die[5];
+		Die die1 = new Die();
+		Die die2 = new Die();
+		Die die3 = new Die();
+		Die die4 = new Die();
+		Die die5 = new Die();
+		die1.setRollValue(1);
+		dice[0] = die1;
+		die2.setRollValue(1);
+		dice[1] = die2;
+		die3.setRollValue(1);
+		dice[2] = die3;
+		die4.setRollValue(4);
+		dice[3] = die4;
+		die5.setRollValue(5);
+		dice[4] = die5;
+		
+		// 0 for repeated, 1 for want to roll
+		int[] picked = {0,0,0,1,1};
+		
+		assertArrayEquals(picked, upperSectioner.pickDiceToRoll(dice));
 		
 	}
 	
