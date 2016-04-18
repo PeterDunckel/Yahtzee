@@ -1,5 +1,11 @@
 package yahtzeeGame;
 
+/**
+ * 
+ * @author Jacob De La Rosa-Torres
+ *
+ */
+
 public class ScoreCard {
 
 	private int[] upperSection = new int[6];
