@@ -143,33 +143,5 @@ public class OfAKinderStrategy implements Strategy {
 		return indexOfCategory;
 
 	}
-	
-	public static void main(String[] args) {
-		
-		OfAKinderStrategy ofAKinder = new OfAKinderStrategy();
-		
-		Die[] dice = new Die[5];
-		Die die1 = new Die();
-		Die die2 = new Die();
-		Die die3 = new Die();
-		Die die4 = new Die();
-		Die die5 = new Die();
-		die1.setRollValue(1);
-		dice[0] = die1;
-		die2.setRollValue(2);
-		dice[1] = die2;
-		die3.setRollValue(6);
-		dice[2] = die3;
-		die4.setRollValue(2);
-		dice[3] = die4;
-		die5.setRollValue(5);
-		dice[4] = die5;
-		
-		//int[] picked = {0,1,1,0,1};
-		int[] picked = ofAKinder.pickDiceToRoll(dice);
-		
-		for(int val : picked){
-			System.out.println(val);
-		}
-	}
+
 }

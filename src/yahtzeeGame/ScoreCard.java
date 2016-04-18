@@ -1,14 +1,17 @@
 package yahtzeeGame;
 
+/**
+ * 
+ * @author Jacob De La Rosa-Torres
+ *
+ */
+
 public class ScoreCard {
 
 	private int[] upperSection = new int[6];
-	private int upperScore;
 	private final int BONUS = 35;
 	
 	private int[] lowerSection = new int[7];
-	private int lowerScore;
-	private int totalScore;
 	
 	public ScoreCard(){
 		lowerSection[6] = -1;
@@ -31,19 +34,26 @@ public class ScoreCard {
 	}
 	
 	public int getUpperScore(){
-		return upperScore;
+		
+		int sum = 0;
+		
+		for(int s : upperSection){
+			sum += s;
+		}
+		return sum;
 	}
 	
 	public int getLowerScore(){
-		return lowerScore;
+		int sum = 0;
+		
+		for(int s : lowerSection){
+			sum += s;
+		}
+		return sum;
 	}
 	
 	public int getTotalScore(){
-		return totalScore;
-	}
-	
-	public void setTotalScore(int grandTotalScore){
-		this.totalScore = grandTotalScore;
+		return getTotalUpperScore() + getLowerScore();
 	}
 	
 	public int getTotalUpperScore(){
@@ -54,9 +64,9 @@ public class ScoreCard {
 		}
 		
 		if(sum >= 63){
-			return upperScore + BONUS;
+			return sum + BONUS;
 		}
-		return upperScore;
+		return sum;
 	}
 	
 	//----------------------------------

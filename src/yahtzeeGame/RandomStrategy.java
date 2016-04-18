@@ -35,5 +35,4 @@ public class RandomStrategy implements Strategy{
 		
 		return num;
 	}
-	
 }
