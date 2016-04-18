@@ -24,8 +24,12 @@ public class RandomStrategy implements Strategy{
 	public int pickCategory(Die[] dice) {
 		
 		// randomly choose a category
+		Game game = Game.getGameSingleton();
 		
 		Random rand = new Random();
+		
+		// check if category is taken
+		
 		return rand.nextInt(13);
 	}
 	
