@@ -29,11 +29,18 @@ public class RandomStrategy implements Strategy{
 		
 		Random rand = new Random();
 		int num = rand.nextInt(13);
+		boolean isCategoryTaken = true;
 		
-		// check if category is taken
-		while(game.players.get(game.currentTurn).selectedCategories[num] == 1){
+		// check if category is taken		
+		do{
 			num = rand.nextInt(13);
-		}
+			
+			if(num <= 5){
+				isCategoryTaken = game.getPlayers().get(game.currentTurn).scoreCard.getUpperSection()[num] >= 0;
+			}else{
+				isCategoryTaken = game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[num-6] >= 0;
+			}
+		}while(isCategoryTaken);
 		
 		return num;
 	}

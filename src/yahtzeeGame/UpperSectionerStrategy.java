@@ -100,27 +100,27 @@ public class UpperSectionerStrategy implements Strategy {
 			// if there are any Upper Section categories left (such as Aces, Twos, etc.), 
 			// place into the Upper Section category
 			if(scorecard.upperNum(dice, 1)>=maxScore 
-					&& game.players.get(game.currentTurn).selectedCategories[1-1] != 1){
+					&& game.getPlayers().get(game.currentTurn).scoreCard.getUpperSection()[0] >= 0){
 				maxScore = scorecard.upperNum(dice, 1);
 				indexOfCategory = 1-1;
 			} else if(scorecard.upperNum(dice, 2)>=maxScore 
-					&& game.players.get(game.currentTurn).selectedCategories[2-1] != 1){
+					&& game.getPlayers().get(game.currentTurn).scoreCard.getUpperSection()[1] >= 0){
 				maxScore = scorecard.upperNum(dice, 2);
 				indexOfCategory = 2-1;
 			} else if(scorecard.upperNum(dice, 3)>=maxScore 
-					&& game.players.get(game.currentTurn).selectedCategories[3-1] != 1){
+					&& game.getPlayers().get(game.currentTurn).scoreCard.getUpperSection()[2] >= 0){
 				maxScore = scorecard.upperNum(dice, 3);
 				indexOfCategory = 3-1;
 			} else if(scorecard.upperNum(dice, 4)>=maxScore 
-					&& game.players.get(game.currentTurn).selectedCategories[4-1] != 1){
+					&& game.getPlayers().get(game.currentTurn).scoreCard.getUpperSection()[3] >= 0){
 				maxScore = scorecard.upperNum(dice, 4);
 				indexOfCategory = 4-1;
 			} else if(scorecard.upperNum(dice, 5)>=maxScore 
-					&& game.players.get(game.currentTurn).selectedCategories [5-1] != 1){
+					&& game.getPlayers().get(game.currentTurn).scoreCard.getUpperSection()[4] >= 0){
 				maxScore = scorecard.upperNum(dice, 5);
 				indexOfCategory = 5-1;
 			} else if(scorecard.upperNum(dice, 6)>=maxScore 
-					&& game.players.get(game.currentTurn).selectedCategories[6-1] != 1){
+					&& game.getPlayers().get(game.currentTurn).scoreCard.getUpperSection()[5] >= 0){
 				maxScore = scorecard.upperNum(dice, 6);
 				indexOfCategory = 6-1;
 			} else {
