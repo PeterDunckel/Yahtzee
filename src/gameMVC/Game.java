@@ -130,6 +130,10 @@ public class Game {
 		
 		rollCount = 0;
 		gameController.resetGUI();
+		
+		
+		
+		
 	}
 	
 	public void checkForWinner(){
