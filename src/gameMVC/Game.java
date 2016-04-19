@@ -131,9 +131,11 @@ public class Game {
 		rollCount = 0;
 		gameController.resetGUI();
 		
-		
-		
-		
+		if(gameController.getCurrentPlayer().getClass() == Computer.class){
+			
+			((Computer) gameController.getCurrentPlayer()).notifyTurn();
+			
+		}
 	}
 	
 	public void checkForWinner(){

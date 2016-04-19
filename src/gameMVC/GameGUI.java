@@ -248,7 +248,7 @@ public class GameGUI extends JFrame implements WindowFocusListener{
 			public void mouseClicked(MouseEvent arg0) {
 				//Player Creation
 				
-				if(playerName != null){
+				
 					
 					gameController.addComputer();
 					//Only four players allowed
@@ -257,7 +257,7 @@ public class GameGUI extends JFrame implements WindowFocusListener{
 						addHumanPlyrBtn.setEnabled(false);
 					}				
 					btnStartGame.setEnabled(true);
-				}
+				
 			}
 		});
 		mnAddPlayer.add(addComputerPlyrBtn);

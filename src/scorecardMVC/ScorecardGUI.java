@@ -184,7 +184,7 @@ public class ScorecardGUI extends JFrame {
 	public void setUpdateUpperLabels(int pos){
 		
 		upperLbls.get(pos).setText(Integer.toString(scoreCardController.upperNum(pos + 1)));
-	
+		scoreCardController.setUpperSection(pos, scoreCardController.upperNum(pos + 1));
 		//Disable all buttons and reset their formatting
 		resetBtns();
 		setAllScoreFields();
@@ -197,25 +197,32 @@ public class ScorecardGUI extends JFrame {
 		
 		switch (pos){
 		case 6:
-			lowerLbls.get(pos).setText(Integer.toString(scoreCardController.totalOfDice()));
+			lowerLbls.get(pos - 6).setText(Integer.toString(scoreCardController.totalOfDice()));
+			scoreCardController.setUpperSection(pos - 6, scoreCardController.totalOfDice());
 			break;
 		case 7:
-			lowerLbls.get(pos).setText(Integer.toString(scoreCardController.totalOfDice()));
+			lowerLbls.get(pos - 6).setText(Integer.toString(scoreCardController.totalOfDice()));
+			scoreCardController.setUpperSection(pos - 6, scoreCardController.totalOfDice());
 			break;
 		case 8:
-			lowerLbls.get(pos).setText("25");
+			lowerLbls.get(pos - 6).setText("25");
+			scoreCardController.setUpperSection(pos - 6, 25);
 			break;
 		case 9:
-			lowerLbls.get(pos).setText("30");
+			lowerLbls.get(pos - 6).setText("30");
+			scoreCardController.setUpperSection(pos - 6, 30);
 			break;
 		case 10:
-			lowerLbls.get(pos).setText("40");
+			lowerLbls.get(pos - 6).setText("40");
+			scoreCardController.setUpperSection(pos - 6, 40);
 			break;
 		case 11:
-			lowerLbls.get(pos).setText("50");
+			lowerLbls.get(pos - 6).setText("50");
+			scoreCardController.setUpperSection(pos - 6, 50);
 			break;
 		case 12:
 			lowerLbls.get(pos).setText(Integer.toString(scoreCardController.totalOfDice()));
+			scoreCardController.setUpperSection(pos - 6, scoreCardController.totalOfDice());
 			break;
 		}
 		
