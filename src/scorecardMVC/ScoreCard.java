@@ -1,4 +1,6 @@
-package yahtzeeGame;
+package scorecardMVC;
+
+import yahtzeeGame.Die;
 
 /**
  * 
@@ -10,12 +12,25 @@ public class ScoreCard {
 
 	private int[] upperSection = new int[6];
 	private final int BONUS = 35;
-	
+	//public ScoreCardController scc;
 	private int[] lowerSection = new int[7];
 	
 	public ScoreCard(){
-		lowerSection[6] = -1;
+		
+		for(int i = 0; i < upperSection.length; i++){
+			upperSection[i] = -1;
+		}
+		
+		for(int i = 0; i < lowerSection.length; i++){
+			lowerSection[i] = -1;
+		}
+
+		//scc = new ScoreCardController(scorecardGUI);
 	}
+	
+//	public void notifyController(Die[] dice){
+//		scc.notifyBeenRolled(dice);
+//	}
 	
 	public void addScoreToUpperSection(int score, int pos){
 		upperSection[pos] = score;
@@ -38,7 +53,10 @@ public class ScoreCard {
 		int sum = 0;
 		
 		for(int s : upperSection){
-			sum += s;
+			if(s != -1){
+				sum += s;
+				System.out.println("sum " + sum);
+			}
 		}
 		return sum;
 	}
@@ -47,7 +65,9 @@ public class ScoreCard {
 		int sum = 0;
 		
 		for(int s : lowerSection){
-			sum += s;
+			if(s != -1){
+				sum += s;
+			}
 		}
 		return sum;
 	}
@@ -56,17 +76,31 @@ public class ScoreCard {
 		return getTotalUpperScore() + getLowerScore();
 	}
 	
+	public int getBonus(){
+		return BONUS;
+	}
+	
 	public int getTotalUpperScore(){
 		int sum = 0;
 		
 		for(int s : upperSection){
-			sum += s;
+			if(s != -1){
+				sum += s;
+			}
 		}
 		
 		if(sum >= 63){
 			return sum + BONUS;
 		}
 		return sum;
+	}
+	
+	public void setUpperSection(int index, int value){
+		upperSection[index] = value;
+	}
+	
+	public void setLowerSection(int index, int value){
+		lowerSection[index] = value;
 	}
 	
 	//----------------------------------

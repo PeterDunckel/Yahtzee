@@ -1,13 +1,18 @@
 package yahtzeeGame;
 
+import scorecardMVC.ScoreCard;
+
 public class Computer extends Player{
 
-	public ScoreCard scoreCard;
+	private static int numOfComputers = 0;
 	private Strategy strategy;
 	
 	public Computer(Strategy strategy){
-		this.strategy = strategy;	
-		scoreCard = new ScoreCard();
+		
+		super();
+		this.strategy = strategy;
+		numOfComputers++;
+		this.name = "Computer " + numOfComputers;
 	}
 	
 	public Strategy getStrategy() {

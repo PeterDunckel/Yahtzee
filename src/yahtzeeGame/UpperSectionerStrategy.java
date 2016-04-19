@@ -1,5 +1,8 @@
 package yahtzeeGame;
 
+import scorecardMVC.ScoreCard;
+import gameMVC.Game;
+
 /*
  * Has the same behavior about which dice to keep/roll as an Of-a- Kinder. 
  * But once the hand is done, if there are any Upper Section categories left 

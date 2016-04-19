@@ -1,5 +1,8 @@
 package yahtzeeGame;
 
+import scorecardMVC.ScoreCard;
+import gameMVC.Game;
+
 public class OfAKinderStrategy implements Strategy {
 	
 	static int rollCount = 0;
@@ -75,7 +78,7 @@ public class OfAKinderStrategy implements Strategy {
 			
 			for(int i=1; i<=6; i++, indexOfCategory++){
 				if(scorecard.upperNum(dice, i)>=maxScore 
-						&& game.players.get(game.currentTurn).selectedCategories[i-1] != 1){
+						&& game.getPlayers().get(game.currentTurn).scoreCard.getUpperSection()[i-1] != 1){
 					maxScore = scorecard.upperNum(dice, i);
 					indexOfCategory = i-1;
 				};
@@ -83,7 +86,7 @@ public class OfAKinderStrategy implements Strategy {
 			
 			if(scorecard.ofAKind(dice, 3)){
 				if(scorecard.totalDice(dice) >= maxScore
-						&& game.players.get(game.currentTurn).selectedCategories[6] != 1){
+						&& game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[0] != 1){
 					maxScore = scorecard.totalDice(dice);
 					indexOfCategory = 6;
 				}
@@ -91,7 +94,7 @@ public class OfAKinderStrategy implements Strategy {
 			
 			if(scorecard.ofAKind(dice, 4)){
 				if(scorecard.totalDice(dice) >= maxScore
-						&& game.players.get(game.currentTurn).selectedCategories[7] != 1){
+						&& game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[1] != 1){
 					maxScore = scorecard.totalDice(dice);
 					indexOfCategory = 7;
 				}
@@ -99,7 +102,7 @@ public class OfAKinderStrategy implements Strategy {
 			
 			if(scorecard.isfullHouse(dice)){
 				if(25 >= maxScore
-						&& game.players.get(game.currentTurn).selectedCategories[8] != 1){
+						&& game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[2] != 1){
 					maxScore = 25;
 					indexOfCategory = 8;
 				}
@@ -107,7 +110,7 @@ public class OfAKinderStrategy implements Strategy {
 			
 			if(scorecard.isStraight(dice, 4)){
 				if(30 >= maxScore
-						&& game.players.get(game.currentTurn).selectedCategories[9] != 1){
+						&& game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[3] != 1){
 					maxScore = 30;
 					indexOfCategory = 9;
 				}
@@ -115,16 +118,14 @@ public class OfAKinderStrategy implements Strategy {
 			
 			if(scorecard.isStraight(dice, 5)){
 				if(40 >= maxScore
-						&& game.players.get(game.currentTurn).selectedCategories[10] != 1){
+						&& game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[4] != 1){
 					maxScore = 40;
 					indexOfCategory = 10;
 				}
 			}
 			
-			if(scorecard.yahtzee(dice)
-					&& game.players.get(game.currentTurn).selectedCategories[11] != 1){
-				if(40 >= maxScore
-						&& game.players.get(game.currentTurn).selectedCategories[10] != 1){
+			if(scorecard.yahtzee(dice) && game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[5] != 1){
+				if(maxScore <= 50){
 					maxScore = 50;
 				indexOfCategory = 11;
 				}
@@ -132,7 +133,7 @@ public class OfAKinderStrategy implements Strategy {
 			
 			if(scorecard.chance()){
 				if(scorecard.totalDice(dice) >= maxScore
-						&& game.players.get(game.currentTurn).selectedCategories[12] != 1){
+						&& game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[6] != 1){
 					maxScore = scorecard.totalDice(dice);
 					indexOfCategory = 12;
 				}

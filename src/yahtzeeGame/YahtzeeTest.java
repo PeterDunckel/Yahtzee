@@ -10,6 +10,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import scorecardMVC.ScoreCard;
+
 public class YahtzeeTest {
 	
 	public OfAKinderStrategy ofAKinder = new OfAKinderStrategy();

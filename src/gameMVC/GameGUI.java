@@ -1,4 +1,4 @@
-package yahtzeeGame;
+package gameMVC;
 
 import java.awt.BorderLayout;
 import java.awt.Button;
@@ -26,6 +26,14 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
+import scorecardMVC.ScorecardGUI;
+import yahtzeeGame.Computer;
+import yahtzeeGame.Die;
+import yahtzeeGame.FourAndUpStrategy;
+import yahtzeeGame.Human;
+import yahtzeeGame.Player;
+import yahtzeeGame.Strategy;
+
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.ActionListener;
@@ -33,6 +41,9 @@ import java.awt.event.ActionEvent;
 
 public class GameGUI extends JFrame implements WindowFocusListener{
 
+	//private GameController gameController = new GameController();
+	
+	private GameController gameController;
 	private JButton dieOne;
 	private JButton dieTwo;
 	private JButton dieThree;
@@ -41,23 +52,18 @@ public class GameGUI extends JFrame implements WindowFocusListener{
 	private JButton[] dieButtons = new JButton[5];
 	private JButton rollDieBtn;
 	private JButton btnStartGame;
-	
-	private Game game = Game.getGameSingleton();
-	private JPanel contentPane;
 	private JButton addHumanPlyrBtn;
-	private JLabel MessageLbl;
-	private static int rollCount;
-	private ArrayList<ScorecardGUI> scoreCards = new ArrayList<ScorecardGUI>();
-	private String playerName;
-	private int playerCount;
-	private static boolean canRoll = false;
-	private JMenu mnAddPlayer;
 	private JButton addComputerPlyrBtn;
 	private JButton btnNewGame;
+	
+	private JPanel contentPane;
+	
+	private JLabel MessageLbl;
+	private String playerName;
+	private JMenu mnAddPlayer;
+	
 	private boolean hasGameStarted;
 	
-	private static GameGUI gameGUI = new GameGUI();
-
 	/**
 	 * Create the frame.
 	 */
@@ -70,10 +76,6 @@ public class GameGUI extends JFrame implements WindowFocusListener{
 		contentPane.setLayout(null);
 		
 		addWindowFocusListener(this);
-		
-		// initialize variables
-		rollCount = 0;
-		playerCount = 0;
 		
 		MessageLbl = new JLabel("Get started by adding players.");
 		MessageLbl.setHorizontalAlignment(SwingConstants.CENTER);
@@ -101,26 +103,19 @@ public class GameGUI extends JFrame implements WindowFocusListener{
 		rollDieBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("RollBtn was clicked");
-				if(canRoll){
+				
+				if(gameController.getRollCount() < 3){
 										
-					game.rollDice();
-					displayDice();
-					rollCount++;
-					if(rollCount == 3){
-						canRoll = false;
-					}
+					gameController.rollDice();
 					
-					if(game.currentTurn >= game.players.size()){
-						game.currentTurn = 0;
-					}
-					scoreCards.get(game.currentTurn).notifyScorecard(game.dice);
-					if(game.players.get(game.currentTurn).getClass() == Human.class){
-						MessageLbl.setText(((Human) game.players.get(game.currentTurn)).getName()+" has "+(3-rollCount)+" rolls left.");
-					}
+					gameController.getCurrentPlayer().notifyDiceBeenRolled();
+					
+						MessageLbl.setText(((Human) gameController.getCurrentPlayer()).getName() +" has "+(3-gameController.getRollCount())+" rolls left.");
+					
 				}else{
-					if(game.players.get(game.currentTurn).getClass() == Human.class){
-						MessageLbl.setText(((Human) game.players.get(game.currentTurn)).getName()+" must select score!");
-					}
+				
+						MessageLbl.setText(((Human) gameController.getCurrentPlayer()).getName()+" must select score!");
+					
 				}
 			}
 		});
@@ -228,21 +223,13 @@ public class GameGUI extends JFrame implements WindowFocusListener{
 				//Player Creation
 				playerName = JOptionPane.showInputDialog(
                         "What is your name?", null);				
-				Player newPlayer = new Human(playerName);
-				game.players.add(newPlayer);
 				
 				if(playerName != null){
-					//Scorecard creation
-					ScorecardGUI scFrame = new ScorecardGUI(playerName);
-					scFrame.setVisible(true);
-					scoreCards.add(scFrame);
-					
-					// increase player count when adding more players
-					playerCount++;
-					
+
+					gameController.addHuman(playerName);
 					//Only four players allowed
 					//Disable addButton after four players added
-					if(playerCount >= 4){
+					if(gameController.getAmountOfPlayers() >= 4){
 						addHumanPlyrBtn.setEnabled(false);
 					}				
 					btnStartGame.setEnabled(true);
@@ -260,24 +247,13 @@ public class GameGUI extends JFrame implements WindowFocusListener{
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				//Player Creation
-				playerName = JOptionPane.showInputDialog(
-                        "What is your name?", null);	
-				Strategy fourAndUp = new FourAndUpStrategy();
-				Player newPlayer = new Computer(fourAndUp);
-				game.players.add(newPlayer);
 				
 				if(playerName != null){
-					//Scorecard creation
-					ScorecardGUI scFrame = new ScorecardGUI(playerName+" A.I.");
-					scFrame.setVisible(true);
-					scoreCards.add(scFrame);
 					
-					// increase player count when adding more players
-					playerCount++;
-					
+					gameController.addComputer();
 					//Only four players allowed
 					//Disable addButton after four players added
-					if(playerCount >= 4){
+					if(gameController.getAmountOfPlayers() >= 4){
 						addHumanPlyrBtn.setEnabled(false);
 					}				
 					btnStartGame.setEnabled(true);
@@ -302,10 +278,7 @@ public class GameGUI extends JFrame implements WindowFocusListener{
 				hasGameStarted=true;
 				
 				//if 1st Player is A.I. perform click
-				if(game.players.get(0).getClass() == Computer.class){
-					//User window focus to perform click
-//					gameGUI.setVisible(false);
-//					gameGUI.setVisible(true);
+				if(gameController.getCurrentPlayer().getClass() == Computer.class){
 					performComputerMove();
 				}
 				
@@ -317,7 +290,6 @@ public class GameGUI extends JFrame implements WindowFocusListener{
 				
 				//Allow players to roll
 				rollDieBtn.setEnabled(true);
-				canRoll=true;
 				
 				//Disable this btn
 				btnStartGame.setEnabled(false);
@@ -325,35 +297,32 @@ public class GameGUI extends JFrame implements WindowFocusListener{
 		});
 		btnStartGame.setEnabled(false);
 		btnStartGame.setBounds(78, 215, 186, 25);
-		contentPane.add(btnStartGame);		
-	}
-	
-	// Singleton getter
-	public static GameGUI getGameSingleton(){
-		return gameGUI;
+		contentPane.add(btnStartGame);	
+		
+		this.setVisible(true);
+		
+		Game game = Game.getGameSingleton();
+		gameController = new GameController(this, game);
+		game.setController(gameController);
 	}
 	
 	private void performComputerMove() {
-		if(canRoll){
+		
+		if(gameController.getRollCount() < 3){
 			
-			game.rollDice();
-			displayDice();
-			rollCount++;
-			if(rollCount == 3){
-				canRoll = false;
-			}
+			gameController.rollDice();
+			
+			gameController.getCurrentPlayer().notifyDiceBeenRolled();
 			
 			//Check strategy to pick
 			pickStrategy();
 			
-			if(game.currentTurn >= game.players.size()){
-				game.currentTurn = 0;
-			}
-			scoreCards.get(game.currentTurn).notifyScorecard(game.dice);
+				MessageLbl.setText(((Computer) gameController.getCurrentPlayer()).getName() +" has "+(3-gameController.getRollCount())+" rolls left.");
 			
-			MessageLbl.setText("Computer has "+(3-rollCount)+" rolls left.");
 		}else{
-			MessageLbl.setText("Computer must select score!");
+		
+				MessageLbl.setText(((Computer) gameController.getCurrentPlayer()).getName()+" must select score!");
+			
 		}
 		
 	}
@@ -366,11 +335,10 @@ public class GameGUI extends JFrame implements WindowFocusListener{
 	// Enable Dice for Roll
 	//---------------------
 	private void enableDiceForRoll(int pos){
-		if (game.dice[pos].getRollEnabled()){
-			game.dice[pos].setRollEnabled(false);
+		
+		if(gameController.enableDice(pos)){
 			dieButtons[pos].setForeground(Color.black);
-		} else {
-			game.dice[pos].setRollEnabled(true);
+		} else{
 			dieButtons[pos].setForeground(Color.red);
 		}
 	}
@@ -378,21 +346,11 @@ public class GameGUI extends JFrame implements WindowFocusListener{
 	//-------------
 	// Display Dice
 	//-------------
-	private void displayDice(){
+	public void displayDice(Die[] dice){
 		for(int i = 0; i < 5; i++){
-			dieButtons[i].setText(Integer.toString(game.dice[i].getRollValue()));
+			dieButtons[i].setText(Integer.toString(dice[i].getRollValue()));
 			dieButtons[i].setForeground(Color.black);			
 		}
-	}
-	
-	//-----------
-	// Reset Dice
-	//-----------
-	public void resetForNextPlayer(){
-		canRoll= true;
-		rollCount = 0;
-		resetDice();
-		this.setVisible(true);
 	}
 	
 	//-----------
@@ -401,27 +359,18 @@ public class GameGUI extends JFrame implements WindowFocusListener{
 	private void resetDice(){
 		for(int i = 0; i < 5; i++){
 			dieButtons[i].setText("?");
-			game.dice[i].setRollEnabled(true);
 		}
-	}
-	
-	public int getRollCount() {
-		return rollCount;
-	}
-
-	public void setRollCount(int rollCount) {
-		this.rollCount = rollCount;
 	}
 
 	@Override
 	public void windowGainedFocus(WindowEvent arg0) {
 		//On window focus if player is A.I. roll die
-		if(game.players.size() > 0){
-			if((game.players.get(0).getClass() == Computer.class) && hasGameStarted){
+		if(gameController.getAmountOfPlayers() > 0){
+			if((gameController.getPlayers().get(0).getClass() == Computer.class) && hasGameStarted){
 				performComputerMove();
 			}
 		}
-		
+
 		System.out.println("Gained focus");
 	}
 
@@ -429,5 +378,12 @@ public class GameGUI extends JFrame implements WindowFocusListener{
 	public void windowLostFocus(WindowEvent arg0) {
 		
 		System.out.println("Lost focus");
+	}
+	
+	public void resetGUIAfterTurn(){
+		
+		resetDice();
+		rollDieBtn.setEnabled(true);
+		//this.setVisible(true);
 	}
 }

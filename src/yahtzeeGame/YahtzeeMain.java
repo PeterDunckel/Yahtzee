@@ -1,5 +1,9 @@
 package yahtzeeGame;
 
+import gameMVC.Game;
+import gameMVC.GameController;
+import gameMVC.GameGUI;
+
 import java.awt.EventQueue;
 
 import javax.swing.JButton;
@@ -14,9 +18,13 @@ public class YahtzeeMain {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+
+					GameGUI gameGUI = new GameGUI();
+					//gameGUI.setVisible(true);
 					
-					GameGUI frame = GameGUI.getGameSingleton();
-					frame.setVisible(true);
+					//Game game = Game.getGameSingleton();
+					
+					//GameController gameController = new GameController(gameGUI, game);
 					
 				} catch (Exception e) {
 					e.printStackTrace();

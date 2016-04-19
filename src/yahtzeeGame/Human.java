@@ -1,18 +1,14 @@
 package yahtzeeGame;
 
-public class Human extends Player{
+import scorecardMVC.ScoreCard;
 
-	public ScoreCard scoreCard;
-	private String name;
+public class Human extends Player{
 	
 	public Human(String name){
+		
+		super();
 		this.name = name;
-		scoreCard = new ScoreCard();
-	}
-
-
-	public String getName(){
-		return name;
+		
 	}
 	
 }

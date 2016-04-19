@@ -1,5 +1,7 @@
 package yahtzeeGame;
 
+import gameMVC.Game;
+
 import java.util.Random;
 
 public class RandomStrategy implements Strategy{
