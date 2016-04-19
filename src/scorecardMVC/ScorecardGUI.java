@@ -181,6 +181,52 @@ public class ScorecardGUI extends JFrame {
 		}
 	}
 	
+	public void setUpdateUpperLabels(int pos){
+		
+		upperLbls.get(pos).setText(Integer.toString(scoreCardController.upperNum(pos + 1)));
+	
+		//Disable all buttons and reset their formatting
+		resetBtns();
+		setAllScoreFields();
+		
+		//Go to next players turn
+		game.changeTurn();
+	}
+	
+	public void setUpdateLowerLabels(int pos){
+		
+		switch (pos){
+		case 6:
+			lowerLbls.get(pos).setText(Integer.toString(scoreCardController.totalOfDice()));
+			break;
+		case 7:
+			lowerLbls.get(pos).setText(Integer.toString(scoreCardController.totalOfDice()));
+			break;
+		case 8:
+			lowerLbls.get(pos).setText("25");
+			break;
+		case 9:
+			lowerLbls.get(pos).setText("30");
+			break;
+		case 10:
+			lowerLbls.get(pos).setText("40");
+			break;
+		case 11:
+			lowerLbls.get(pos).setText("50");
+			break;
+		case 12:
+			lowerLbls.get(pos).setText(Integer.toString(scoreCardController.totalOfDice()));
+			break;
+		}
+		
+		resetBtns();
+		setAllScoreFields();
+		
+		//Go to next players turn
+		game.changeTurn();
+		
+	}
+	
 	private void createArrayBtnList(String[] arrayOfNames, ArrayList<JButton> btnArrayList
 			,int x, int y, int height, int width){
 		

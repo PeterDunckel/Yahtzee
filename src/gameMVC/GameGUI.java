@@ -279,7 +279,9 @@ public class GameGUI extends JFrame implements WindowFocusListener{
 				
 				//if 1st Player is A.I. perform click
 				if(gameController.getCurrentPlayer().getClass() == Computer.class){
-					performComputerMove();
+					
+					((Computer) gameController.getCurrentPlayer()).notifyTurn();
+					
 				}
 				
 				//disable the ability to add human and computer players

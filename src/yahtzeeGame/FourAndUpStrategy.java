@@ -37,7 +37,7 @@ public class FourAndUpStrategy implements Strategy{
 			
 			for(int i=1; i<=6; i++, indexOfCategory++){
 				if(scorecard.upperNum(dice, i)>=maxScore 
-						&& game.getPlayers().get(game.currentTurn).scoreCard.getUpperSection()[i-1] != 1){
+						&& game.getPlayers().get(game.currentTurn).scoreCard.getUpperSection()[i-1] < 0){
 					maxScore = scorecard.upperNum(dice, i);
 					indexOfCategory = i-1;
 				};
@@ -45,7 +45,7 @@ public class FourAndUpStrategy implements Strategy{
 			
 			if(scorecard.ofAKind(dice, 3)){
 				if(scorecard.totalDice(dice) >= maxScore
-						&& game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[0] != 1){
+						&& game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[0] < 0){
 					maxScore = scorecard.totalDice(dice);
 					indexOfCategory = 6;
 				}
@@ -53,7 +53,7 @@ public class FourAndUpStrategy implements Strategy{
 			
 			if(scorecard.ofAKind(dice, 4)){
 				if(scorecard.totalDice(dice) >= maxScore
-						&& game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[1] != 1){
+						&& game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[1] < 0){
 					maxScore = scorecard.totalDice(dice);
 					indexOfCategory = 7;
 				}
@@ -61,7 +61,7 @@ public class FourAndUpStrategy implements Strategy{
 			
 			if(scorecard.isfullHouse(dice)){
 				if(25 >= maxScore
-						&& game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[2] != 1){
+						&& game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[2] < 0){
 					maxScore = 25;
 					indexOfCategory = 8;
 				}
@@ -69,7 +69,7 @@ public class FourAndUpStrategy implements Strategy{
 			
 			if(scorecard.isStraight(dice, 4)){
 				if(30 >= maxScore
-						&& game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[3] != 1){
+						&& game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[3] < 0){
 					maxScore = 30;
 					indexOfCategory = 9;
 				}
@@ -77,13 +77,13 @@ public class FourAndUpStrategy implements Strategy{
 			
 			if(scorecard.isStraight(dice, 5)){
 				if(40 >= maxScore
-						&& game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[4] != 1){
+						&& game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[4] < 0){
 					maxScore = 40;
 					indexOfCategory = 10;
 				}
 			}
 			
-			if(scorecard.yahtzee(dice) && game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[5] != 1){
+			if(scorecard.yahtzee(dice) && game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[5] < 0){
 				if(maxScore <= 50){
 					maxScore = 50;
 				indexOfCategory = 11;
@@ -92,7 +92,7 @@ public class FourAndUpStrategy implements Strategy{
 			
 			if(scorecard.chance()){
 				if(scorecard.totalDice(dice) >= maxScore
-						&& game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[6] != 1){
+						&& game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[6] < 0){
 					maxScore = scorecard.totalDice(dice);
 					indexOfCategory = 12;
 				}

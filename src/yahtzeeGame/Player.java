@@ -7,9 +7,9 @@ import scorecardMVC.ScorecardGUI;
 public abstract class Player {
 
 	protected String name;
-	private Die[] hand;
+	protected Die[] hand;
 	public ScoreCard scoreCard;
-	private ScorecardGUI scGUI;
+	protected ScorecardGUI scGUI;
 	
 	public Player(){
 		//scoreCard = new ScoreCard(new ScorecardGUI(name));
