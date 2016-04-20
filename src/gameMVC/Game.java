@@ -108,6 +108,7 @@ public class Game {
 	public void addComputer(){
 		
 		players.add(new Computer(new RandomStrategy()));
+		players.get(numOfPlayers).initGUI();
 		numOfPlayers++;
 	}
 	
@@ -117,7 +118,7 @@ public class Game {
 	
 	public void changeTurn(){
 		
-		if(currentRound == 13 && currentTurn == players.size()){
+		if(currentRound >= 13 && currentTurn == (players.size()-1)){
 			checkForWinner();
 		} else {
 			currentTurn++;
@@ -126,16 +127,17 @@ public class Game {
 				currentTurn = 0;
 				currentRound++;
 			}
-		}
-		
-		rollCount = 0;
-		gameController.resetGUI();
-		
-		if(gameController.getCurrentPlayer().getClass() == Computer.class){
 			
-			((Computer) gameController.getCurrentPlayer()).notifyTurn();
+			rollCount = 0;
+			gameController.resetGUI();
 			
-		}
+			if(gameController.getCurrentPlayer().getClass() == Computer.class){
+				
+				((Computer) gameController.getCurrentPlayer()).notifyTurn();
+				
+			}
+		}	
+		
 	}
 	
 	public void checkForWinner(){
@@ -153,7 +155,11 @@ public class Game {
 				}
 			}
 			
-			JOptionPane.showMessageDialog(null, "Congratulations "+winner.getName()+"! You won!");
+			if(game.getPlayers().size() > 1){
+				JOptionPane.showMessageDialog(null, "Congratulations "+winner.getName()+"! You won!");
+			}else{
+				JOptionPane.showMessageDialog(null, "GAME OVER!");
+			}
 		} 
 	}
 

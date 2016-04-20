@@ -39,7 +39,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class GameGUI extends JFrame implements WindowFocusListener{
+public class GameGUI extends JFrame{
 
 	//private GameController gameController = new GameController();
 	
@@ -75,7 +75,7 @@ public class GameGUI extends JFrame implements WindowFocusListener{
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		addWindowFocusListener(this);
+//		addWindowFocusListener(this);
 		
 		MessageLbl = new JLabel("Get started by adding players.");
 		MessageLbl.setHorizontalAlignment(SwingConstants.CENTER);
@@ -364,23 +364,23 @@ public class GameGUI extends JFrame implements WindowFocusListener{
 		}
 	}
 
-	@Override
-	public void windowGainedFocus(WindowEvent arg0) {
-		//On window focus if player is A.I. roll die
-		if(gameController.getAmountOfPlayers() > 0){
-			if((gameController.getPlayers().get(0).getClass() == Computer.class) && hasGameStarted){
-				performComputerMove();
-			}
-		}
-
-		System.out.println("Gained focus");
-	}
-
-	@Override
-	public void windowLostFocus(WindowEvent arg0) {
-		
-		System.out.println("Lost focus");
-	}
+//	@Override
+//	public void windowGainedFocus(WindowEvent arg0) {
+//		//On window focus if player is A.I. roll die
+//		if(gameController.getAmountOfPlayers() > 0){
+//			if((gameController.getPlayers().get(0).getClass() == Computer.class) && hasGameStarted){
+//				performComputerMove();
+//			}
+//		}
+//
+//		System.out.println("Gained focus");
+//	}
+//
+//	@Override
+//	public void windowLostFocus(WindowEvent arg0) {
+//		
+//		System.out.println("Lost focus");
+//	}
 	
 	public void resetGUIAfterTurn(){
 		

@@ -55,7 +55,6 @@ public class ScoreCard {
 		for(int s : upperSection){
 			if(s != -1){
 				sum += s;
-				System.out.println("sum " + sum);
 			}
 		}
 		return sum;

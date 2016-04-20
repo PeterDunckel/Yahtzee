@@ -8,7 +8,6 @@ public class FourAndUpStrategy implements Strategy{
 	//When roll count(number of rolls)
 	//equals 3, then we pick category 
 	//that yields highest score 
-	static int rollCount = 0;
 	
 	ScoreCard scorecard = new ScoreCard();
 	Game game = Game.getGameSingleton();
@@ -24,7 +23,6 @@ public class FourAndUpStrategy implements Strategy{
 			}
 			index++;
 		}
-		rollCount++;
 		return diceToReroll;
 	}
 
@@ -33,13 +31,24 @@ public class FourAndUpStrategy implements Strategy{
 		
 		int indexOfCategory = 0;
 		int maxScore = 0;
-		if(rollCount >= 3){
+		boolean categoryIsSelected =false;
+		if(game.getRollCount() >= 3){
 			
-			for(int i=1; i<=6; i++, indexOfCategory++){
+			if(scorecard.chance()){
+				if(scorecard.totalDice(dice) >= maxScore
+						&& game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[6] < 0){
+					maxScore = scorecard.totalDice(dice);
+					indexOfCategory = 12;
+					categoryIsSelected =true;
+				}
+			}
+			
+			for(int i=6; i>=1; i--){
 				if(scorecard.upperNum(dice, i)>=maxScore 
 						&& game.getPlayers().get(game.currentTurn).scoreCard.getUpperSection()[i-1] < 0){
 					maxScore = scorecard.upperNum(dice, i);
 					indexOfCategory = i-1;
+					categoryIsSelected =true;
 				};
 			}
 			
@@ -48,6 +57,7 @@ public class FourAndUpStrategy implements Strategy{
 						&& game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[0] < 0){
 					maxScore = scorecard.totalDice(dice);
 					indexOfCategory = 6;
+					categoryIsSelected =true;
 				}
 			}
 			
@@ -56,6 +66,7 @@ public class FourAndUpStrategy implements Strategy{
 						&& game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[1] < 0){
 					maxScore = scorecard.totalDice(dice);
 					indexOfCategory = 7;
+					categoryIsSelected =true;
 				}
 			}
 			
@@ -64,6 +75,7 @@ public class FourAndUpStrategy implements Strategy{
 						&& game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[2] < 0){
 					maxScore = 25;
 					indexOfCategory = 8;
+					categoryIsSelected =true;
 				}
 			}
 			
@@ -72,6 +84,7 @@ public class FourAndUpStrategy implements Strategy{
 						&& game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[3] < 0){
 					maxScore = 30;
 					indexOfCategory = 9;
+					categoryIsSelected =true;
 				}
 			}
 			
@@ -80,6 +93,7 @@ public class FourAndUpStrategy implements Strategy{
 						&& game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[4] < 0){
 					maxScore = 40;
 					indexOfCategory = 10;
+					categoryIsSelected =true;
 				}
 			}
 			
@@ -87,21 +101,38 @@ public class FourAndUpStrategy implements Strategy{
 				if(maxScore <= 50){
 					maxScore = 50;
 				indexOfCategory = 11;
+				categoryIsSelected =true;
 				}
 			}
-			
-			if(scorecard.chance()){
-				if(scorecard.totalDice(dice) >= maxScore
-						&& game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[6] < 0){
-					maxScore = scorecard.totalDice(dice);
-					indexOfCategory = 12;
-				}
-			}
-			
-			rollCount = 0;
+		
 		}	
+		if(indexOfCategory == 0 && !categoryIsSelected){
+			//Set index of category to a upper category that has not been chosen
+			indexOfCategory = setIdxCtgryToLwstSec();
+		}
+		System.out.println("Four and Up Category: "+ indexOfCategory);
 		return indexOfCategory;
 
+	}
+	
+	private int setIdxCtgryToLwstSec() {
+		for(int i=0; i<=5; i++){
+			if(game.getPlayers().get(game.currentTurn).scoreCard.getUpperSection()[i] < 0){
+				return -1*(i-1);
+			}
+		}
+		for(int i=0; i<=6; i++){
+			if(game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[i] < 0){
+				return (i+7)*-1;
+			}
+		}
+		System.out.println("Error: Catagory not selected!");
+		return 0;
+	}
+
+	@Override
+	public String getStrategyName() {
+		return "Four and Up Strategy";
 	}
 	
 

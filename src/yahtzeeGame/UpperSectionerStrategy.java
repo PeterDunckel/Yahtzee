@@ -13,7 +13,6 @@ import gameMVC.Game;
  */
 public class UpperSectionerStrategy implements Strategy {
 
-	static int rollCount = 0;
 	ScoreCard scorecard = new ScoreCard();
 	Game game = Game.getGameSingleton();
 	
@@ -93,46 +92,70 @@ public class UpperSectionerStrategy implements Strategy {
 		
 		int indexOfCategory = 0;
 		int maxScore = 0;
+		boolean categoryIsSelected =false;
 		
 		// if you rolled 3 times, pick a category
-		if(rollCount >= 3){
+		if(game.getRollCount() >= 3){
 			
 			// if there are any Upper Section categories left (such as Aces, Twos, etc.), 
 			// place into the Upper Section category
+			
 			if(scorecard.upperNum(dice, 1)>=maxScore 
 					&& game.getPlayers().get(game.currentTurn).scoreCard.getUpperSection()[0] < 0){
 				maxScore = scorecard.upperNum(dice, 1);
-				indexOfCategory = 1-1;
-			} else if(scorecard.upperNum(dice, 2)>=maxScore 
+				indexOfCategory = 0;
+				categoryIsSelected = true;
+			}
+			if(scorecard.upperNum(dice, 2)>=maxScore 
 					&& game.getPlayers().get(game.currentTurn).scoreCard.getUpperSection()[1] < 0){
 				maxScore = scorecard.upperNum(dice, 2);
-				indexOfCategory = 2-1;
-			} else if(scorecard.upperNum(dice, 3)>=maxScore 
+				indexOfCategory = 1;
+				categoryIsSelected = true;
+			}
+			if(scorecard.upperNum(dice, 3)>=maxScore 
 					&& game.getPlayers().get(game.currentTurn).scoreCard.getUpperSection()[2] < 0){
 				maxScore = scorecard.upperNum(dice, 3);
-				indexOfCategory = 3-1;
-			} else if(scorecard.upperNum(dice, 4)>=maxScore 
+				indexOfCategory = 2;
+				categoryIsSelected = true;
+			}
+			if(scorecard.upperNum(dice, 4)>=maxScore 
 					&& game.getPlayers().get(game.currentTurn).scoreCard.getUpperSection()[3] < 0){
 				maxScore = scorecard.upperNum(dice, 4);
-				indexOfCategory = 4-1;
-			} else if(scorecard.upperNum(dice, 5)>=maxScore 
+				indexOfCategory = 3;
+				categoryIsSelected = true;
+			}
+			if(scorecard.upperNum(dice, 5)>=maxScore 
 					&& game.getPlayers().get(game.currentTurn).scoreCard.getUpperSection()[4] < 0){
 				maxScore = scorecard.upperNum(dice, 5);
-				indexOfCategory = 5-1;
-			} else if(scorecard.upperNum(dice, 6)>=maxScore 
+				indexOfCategory = 4;
+				categoryIsSelected = true;
+			}
+			if(scorecard.upperNum(dice, 6)>=maxScore 
 					&& game.getPlayers().get(game.currentTurn).scoreCard.getUpperSection()[5] < 0){
 				maxScore = scorecard.upperNum(dice, 6);
-				indexOfCategory = 6-1;
-			} else {
-		
+				indexOfCategory = 5;
+				categoryIsSelected = true;
+			}
+			
+			if(!categoryIsSelected){
 				// If no Upper Section categories remain, choose the remaining 
 				// category that provides the maximum score for that hand.
 			
+				if(scorecard.chance()){
+					if(scorecard.totalDice(dice) >= maxScore
+							&& game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[6] < 0){
+						maxScore = scorecard.totalDice(dice);
+						indexOfCategory = 12;
+						categoryIsSelected = true;
+					}
+				}
+				
 				if(scorecard.ofAKind(dice, 3)){
 					if(scorecard.totalDice(dice) >= maxScore
 							&& game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[0] < 0){
 						maxScore = scorecard.totalDice(dice);
 						indexOfCategory = 6;
+						categoryIsSelected = true;
 					}
 				}
 				
@@ -141,6 +164,7 @@ public class UpperSectionerStrategy implements Strategy {
 							&& game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[1] < 0){
 						maxScore = scorecard.totalDice(dice);
 						indexOfCategory = 7;
+						categoryIsSelected = true;
 					}
 				}
 				
@@ -149,6 +173,7 @@ public class UpperSectionerStrategy implements Strategy {
 							&& game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[2] < 0){
 						maxScore = 25;
 						indexOfCategory = 8;
+						categoryIsSelected = true;
 					}
 				}
 				
@@ -157,6 +182,7 @@ public class UpperSectionerStrategy implements Strategy {
 							&& game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[3] < 0){
 						maxScore = 30;
 						indexOfCategory = 9;
+						categoryIsSelected = true;
 					}
 				}
 				
@@ -165,31 +191,43 @@ public class UpperSectionerStrategy implements Strategy {
 							&& game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[4] < 0){
 						maxScore = 40;
 						indexOfCategory = 10;
+						categoryIsSelected = true;
 					}
 				}
 				
 				if(scorecard.yahtzee(dice) && game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[5] < 0){
 					if(maxScore <= 50){
 						maxScore = 50;
-					indexOfCategory = 11;
+						indexOfCategory = 11;
+						categoryIsSelected = true;
 					}
 				}
 				
-				if(scorecard.chance()){
-					if(scorecard.totalDice(dice) >= maxScore
-							&& game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[6] < 0){
-						maxScore = scorecard.totalDice(dice);
-						indexOfCategory = 12;
-					}
-				}
 			}
-			
-			rollCount = 0;
-		}	
+		}else if(!categoryIsSelected && indexOfCategory == 0){
+			//Set index of category to a upper category that has not been chosen
+			indexOfCategory = setIdxCtgryToLwstSec();
+		}
+		System.out.println("Upper Section Category: "+ indexOfCategory);
 		return indexOfCategory;
 
 	}
 	
+	private int setIdxCtgryToLwstSec() {
+		for(int i=0; i<=5; i++){
+			if(game.getPlayers().get(game.currentTurn).scoreCard.getUpperSection()[i] < 0){
+				return -1*(i-1);
+			}
+		}
+		for(int i=0; i<=6; i++){
+			if(game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[i] < 0){
+				return (i+7)*-1;
+			}
+		}
+		System.out.println("Error: Catagory not selected!");
+		return 0;
+	}
+
 	public static void main(String[] args) {
 		
 		UpperSectionerStrategy upperSectioner = new UpperSectionerStrategy();
@@ -217,6 +255,11 @@ public class UpperSectionerStrategy implements Strategy {
 		for(int val : picked){
 			System.out.println(val);
 		}
+	}
+
+	@Override
+	public String getStrategyName() {
+		return "Upper Sectioner";
 	}
 
 }

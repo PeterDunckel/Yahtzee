@@ -19,6 +19,7 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import yahtzeeGame.Computer;
 import yahtzeeGame.Die;
 
 public class ScorecardGUI extends JFrame {
@@ -34,6 +35,8 @@ public class ScorecardGUI extends JFrame {
 	private static String playerName;
 	private ArrayList<JLabel> upperLbls = new ArrayList<JLabel>();
 	private ArrayList<JLabel> lowerLbls = new ArrayList<JLabel>();
+	private ArrayList<JLabel> upperLblsInfo = new ArrayList<JLabel>();
+	private ArrayList<JLabel> lowerLblsInfo = new ArrayList<JLabel>();
 	private ArrayList<JButton> upperBtns = new ArrayList<JButton>();
 	private ArrayList<JButton> lowerBtns = new ArrayList<JButton>();	
 	private final String[] upperSecNames ={"Aces","Twos","Threes","Fours","Fives"
@@ -64,7 +67,7 @@ public class ScorecardGUI extends JFrame {
 	public ScorecardGUI(String playerName) {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 350, 700);
+		setBounds(100, 100, 450, 700);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -117,10 +120,12 @@ public class ScorecardGUI extends JFrame {
 		contentPane.add(lblGrandTotal);
 				
 		createArrayBtnList(upperSecNames,upperBtns, strtBtnXpos,strtWidgetYpos,widgetHeight,widgetWidth);
-		createArrayLblList(upperBtns,upperLbls, strtLblXpos,strtWidgetYpos,widgetHeight,widgetWidth);
+		createArrayLblList(upperBtns,upperLbls, strtLblXpos,strtWidgetYpos,widgetHeight,widgetWidth, true);
+		createArrayLblList(upperBtns,upperLblsInfo, strtLblXpos+138,strtWidgetYpos,widgetHeight,widgetWidth, false);
 		
 		createArrayBtnList(lowerSecNames,lowerBtns, strtBtnXpos,strtWidgetYpos+275,widgetHeight,widgetWidth);
-		createArrayLblList(lowerBtns,lowerLbls, strtLblXpos, strtWidgetYpos+275,widgetHeight,widgetWidth);
+		createArrayLblList(lowerBtns,lowerLbls, strtLblXpos, strtWidgetYpos+275,widgetHeight,widgetWidth, true);
+		createArrayLblList(lowerBtns,lowerLblsInfo, strtLblXpos+138, strtWidgetYpos+275,widgetHeight,widgetWidth, false);
 			
 		this.setVisible(true);
 		//System.out.println("Current Turn"+game.currentTurn+" Amt Players"+game.getPlayers().size());
@@ -184,6 +189,9 @@ public class ScorecardGUI extends JFrame {
 	public void setUpdateUpperLabels(int pos){
 		
 		upperLbls.get(pos).setText(Integer.toString(scoreCardController.upperNum(pos + 1)));
+		if(game.getPlayers().get(game.currentTurn).getClass() == Computer.class){
+			upperLblsInfo.get(pos).setText(((Computer) game.getPlayers().get(game.currentTurn)).getStrategy().getStrategyName());
+		}
 		scoreCardController.setUpperSection(pos, scoreCardController.upperNum(pos + 1));
 		//Disable all buttons and reset their formatting
 		resetBtns();
@@ -198,31 +206,52 @@ public class ScorecardGUI extends JFrame {
 		switch (pos){
 		case 6:
 			lowerLbls.get(pos - 6).setText(Integer.toString(scoreCardController.totalOfDice()));
-			scoreCardController.setUpperSection(pos - 6, scoreCardController.totalOfDice());
+			if(game.getPlayers().get(game.currentTurn).getClass() == Computer.class){
+				lowerLblsInfo.get(pos - 6).setText(((Computer) game.getPlayers().get(game.currentTurn)).getStrategy().getStrategyName());
+			}
+			scoreCardController.setLowerSection(pos - 6, scoreCardController.totalOfDice());
 			break;
 		case 7:
 			lowerLbls.get(pos - 6).setText(Integer.toString(scoreCardController.totalOfDice()));
-			scoreCardController.setUpperSection(pos - 6, scoreCardController.totalOfDice());
+			if(game.getPlayers().get(game.currentTurn).getClass() == Computer.class){
+				lowerLblsInfo.get(pos - 6).setText(((Computer) game.getPlayers().get(game.currentTurn)).getStrategy().getStrategyName());
+			}
+			scoreCardController.setLowerSection(pos - 6, scoreCardController.totalOfDice());
 			break;
 		case 8:
 			lowerLbls.get(pos - 6).setText("25");
-			scoreCardController.setUpperSection(pos - 6, 25);
+			if(game.getPlayers().get(game.currentTurn).getClass() == Computer.class){
+				lowerLblsInfo.get(pos - 6).setText(((Computer) game.getPlayers().get(game.currentTurn)).getStrategy().getStrategyName());
+			}
+			scoreCardController.setLowerSection(pos - 6, 25);
 			break;
 		case 9:
 			lowerLbls.get(pos - 6).setText("30");
-			scoreCardController.setUpperSection(pos - 6, 30);
+			if(game.getPlayers().get(game.currentTurn).getClass() == Computer.class){
+				lowerLblsInfo.get(pos - 6).setText(((Computer) game.getPlayers().get(game.currentTurn)).getStrategy().getStrategyName());
+			}
+			scoreCardController.setLowerSection(pos - 6, 30);
 			break;
 		case 10:
 			lowerLbls.get(pos - 6).setText("40");
-			scoreCardController.setUpperSection(pos - 6, 40);
+			if(game.getPlayers().get(game.currentTurn).getClass() == Computer.class){
+				lowerLblsInfo.get(pos - 6).setText(((Computer) game.getPlayers().get(game.currentTurn)).getStrategy().getStrategyName());
+			}
+			scoreCardController.setLowerSection(pos - 6, 40);
 			break;
 		case 11:
 			lowerLbls.get(pos - 6).setText("50");
-			scoreCardController.setUpperSection(pos - 6, 50);
+			if(game.getPlayers().get(game.currentTurn).getClass() == Computer.class){
+				lowerLblsInfo.get(pos - 6).setText(((Computer) game.getPlayers().get(game.currentTurn)).getStrategy().getStrategyName());
+			}
+			scoreCardController.setLowerSection(pos - 6, 50);
 			break;
 		case 12:
-			lowerLbls.get(pos).setText(Integer.toString(scoreCardController.totalOfDice()));
-			scoreCardController.setUpperSection(pos - 6, scoreCardController.totalOfDice());
+			lowerLbls.get(pos-6).setText(Integer.toString(scoreCardController.totalOfDice()));
+			if(game.getPlayers().get(game.currentTurn).getClass() == Computer.class){
+				lowerLblsInfo.get(pos - 6).setText(((Computer) game.getPlayers().get(game.currentTurn)).getStrategy().getStrategyName());
+			}
+			scoreCardController.setLowerSection(pos - 6, scoreCardController.totalOfDice());
 			break;
 		}
 		
@@ -289,12 +318,14 @@ public class ScorecardGUI extends JFrame {
 	}
 
 	private void createArrayLblList(ArrayList<JButton> btnArrayList, ArrayList<JLabel> lblArrayList
-			,int x, int y, int height, int width){
+			,int x, int y, int height, int width, boolean hasBorder){
 		//position labels on frame
 		for(int i=0; i<btnArrayList.size()+3; i++){
 			lblArrayList.add(new JLabel("", SwingConstants.CENTER));			
-			lblArrayList.get(i).setBounds(x,y+(width*i),height,width);			
-			lblArrayList.get(i).setBorder(BorderFactory.createLineBorder(Color.black));			
+			lblArrayList.get(i).setBounds(x,y+(width*i),height,width);		
+			if(hasBorder){
+				lblArrayList.get(i).setBorder(BorderFactory.createLineBorder(Color.black));			
+			}
 			contentPane.add(lblArrayList.get(i));
 		}
 	}
@@ -313,6 +344,38 @@ public class ScorecardGUI extends JFrame {
 		lowerLbls.get(8).setText(String.valueOf(scoreCardController.getTotalUpperScore()));
 		lowerLbls.get(9).setText(String.valueOf(scoreCardController.getGrandTotalScore()));	
 
+	}
+
+	public void setUpdateLowerLabelsZero(int pos) {
+		
+		
+		lowerLbls.get(pos - 6).setText("0");
+		if(game.getPlayers().get(game.currentTurn).getClass() == Computer.class){
+			lowerLblsInfo.get(pos - 6).setText(((Computer) game.getPlayers().get(game.currentTurn)).getStrategy().getStrategyName());
+		}
+		scoreCardController.setLowerSection(pos - 6, 0);
+
+		resetBtns();
+		setAllScoreFields();
+		
+		//Go to next players turn
+		game.changeTurn();
+		
+	}
+
+	public void setUpdateUpperLabelsZero(int pos) {
+		
+		upperLbls.get(pos).setText("0");
+		if(game.getPlayers().get(game.currentTurn).getClass() == Computer.class){
+			upperLblsInfo.get(pos).setText(((Computer) game.getPlayers().get(game.currentTurn)).getStrategy().getStrategyName());
+		}
+		scoreCardController.setUpperSection(pos, 0);
+		//Disable all buttons and reset their formatting
+		resetBtns();
+		setAllScoreFields();
+		
+		//Go to next players turn
+		game.changeTurn();
 	}
 
 

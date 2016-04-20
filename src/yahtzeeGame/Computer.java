@@ -43,17 +43,14 @@ public class Computer extends Player{
 			
 			// roll once then determine which strategy is best to pick
 			// four of a kind test
-			int[] diceToKeep = new int[5];
-			int index=0;
+			int fourAndUpVals = 0;
 			
 			boolean isOfKind = false;
 			
 			for(Die d : dice){
 				if(d.getRollValue() >= 4){
-					//Set values to indexes of dice to reroll to 1
-					diceToKeep[index] = 1;
-				}
-				index++;
+					//Get dice that are above or equal to four
+					fourAndUpVals++;				}
 			}
 			
 			// ofAKindTest dice value one's - six's
@@ -97,7 +94,7 @@ public class Computer extends Player{
 			// if there are 2, use OfAKind or UpperSectioner strategy
 			// if there is 3 or more for four of a kind, pick this strategy
 			// else use random
-			if (diceToKeep.length >= 3) {
+			if (fourAndUpVals >= 3) {
 				// do fourAndUp
 				strategy = new FourAndUpStrategy();
 				System.out.println("Computer is using Four and Up Strategy");
@@ -127,7 +124,9 @@ public class Computer extends Player{
 
 			for (int i = 0; i < picked.length; i++){
 				if(picked[i] == 1){
-					game.enableDice(i);
+					game.getDice()[i].setRollEnabled(true);
+				}else{
+					game.getDice()[i].setRollEnabled(false);
 				}
 			}
 
@@ -136,12 +135,19 @@ public class Computer extends Player{
 			rollBasedOffStrategy();
 		} else {
 			notifyScorecard(strategy.pickCategory(hand));
-			//scoreCard.setUpperSection(strategy.pickCategory(hand), );
+			//scoreCard.setUpperSection(strategy.pickCategory(hand), );			
 		}
 	}
 	
 	private void notifyScorecard(int pos){
-		if(pos <= 5){
+		if(pos < 0){
+			pos = (pos+1)*(-1);
+			if(pos <=5){
+				scGUI.setUpdateUpperLabelsZero(pos);
+			}else{
+				scGUI.setUpdateLowerLabelsZero(pos);
+			}
+		}else if(pos <= 5){
 			scGUI.setUpdateUpperLabels(pos);
 			//scoreCard.setUpperSection(pos, scoreCard.upperNum(hand, pos + 1));
 		} else {
@@ -150,7 +156,7 @@ public class Computer extends Player{
 		
 	}
 		
-	private Strategy getStrategy() {
+	public Strategy getStrategy() {
 		return strategy;
 	}
 
