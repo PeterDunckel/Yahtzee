@@ -140,28 +140,30 @@ public class Computer extends Player{
 	}
 	
 	private void notifyScorecard(int pos){
-		if(pos < 0){
-			pos = (pos+1)*(-1);
-			if(pos <=5){
-				scGUI.setUpdateUpperLabelsZero(pos);
-			}else{
-				scGUI.setUpdateLowerLabelsZero(pos);
+		if(pos == 999){
+			System.out.println("All categories have been selected");
+			//Go to next players turn
+			game.changeTurn();
+		}else{		
+			if(pos < 0){
+				pos = (pos+1)*(-1);
+				if(pos <=5){
+					game.getPlayers().get(game.currentTurn).scGUI.setUpdateUpperLabelsZero(pos);
+				}else{
+					game.getPlayers().get(game.currentTurn).scGUI.setUpdateLowerLabelsZero(pos);
+				}
+			}else if(pos <= 5){
+				game.getPlayers().get(game.currentTurn).scGUI.setUpdateUpperLabels(pos);
+				//scoreCard.setUpperSection(pos, scoreCard.upperNum(hand, pos + 1));
+			} else {
+				game.getPlayers().get(game.currentTurn).scGUI.setUpdateLowerLabels(pos);
 			}
-		}else if(pos <= 5){
-			scGUI.setUpdateUpperLabels(pos);
-			//scoreCard.setUpperSection(pos, scoreCard.upperNum(hand, pos + 1));
-		} else {
-			scGUI.setUpdateLowerLabels(pos);
 		}
 		
 	}
 		
 	public Strategy getStrategy() {
 		return strategy;
-	}
-
-	private void setStrategy(Strategy strategy) {
-		this.strategy = strategy;
 	}
 
 	public int[] pickDiceToRoll(){

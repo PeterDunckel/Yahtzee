@@ -33,6 +33,7 @@ public class RandomStrategy implements Strategy{
 		Random rand = new Random();
 		int num = rand.nextInt(13);
 		boolean isCategoryTaken = true;
+		boolean isCategoryScore = true;
 		
 		// check if category is taken		
 		do{
@@ -44,26 +45,54 @@ public class RandomStrategy implements Strategy{
 				if((num == 12)){
 					isCategoryTaken = game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[num-6] >= 0;
 				}
+				
 				if((num == 11) && scorecard.yahtzee(dice)){
 					isCategoryTaken = game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[num-6] >= 0;
-				}
-				if((num == 10) && scorecard.isStraight(dice, 5)){
+				}else if(num == 11){
 					isCategoryTaken = game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[num-6] >= 0;
-				}
-				if((num == 9) && scorecard.isStraight(dice, 4)){
-					isCategoryTaken = game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[num-6] >= 0;
-				}
-				if((num == 8) && scorecard.isfullHouse(dice)){
-					isCategoryTaken = game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[num-6] >= 0;
-				}
-				if((num == 7) && scorecard.ofAKind(dice, 4)){
-					isCategoryTaken = game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[num-6] >= 0;
-				}
-				if((num == 6) && scorecard.ofAKind(dice, 3)){
-					isCategoryTaken = game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[num-6] >= 0;
+					isCategoryScore = false;					
 				}
 				
+				if((num == 10) && scorecard.isStraight(dice, 5)){
+					isCategoryTaken = game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[num-6] >= 0;
+				}else if(num == 10){
+					isCategoryTaken = game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[num-6] >= 0;
+					isCategoryScore = false;					
+				}
+				
+				if((num == 9) && scorecard.isStraight(dice, 4)){
+					isCategoryTaken = game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[num-6] >= 0;
+				}else if(num == 9){
+					isCategoryTaken = game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[num-6] >= 0;
+					isCategoryScore = false;					
+				}
+				
+				if((num == 8) && scorecard.isfullHouse(dice)){
+					isCategoryTaken = game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[num-6] >= 0;
+				}else if(num == 8){
+					isCategoryTaken = game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[num-6] >= 0;
+					isCategoryScore = false;					
+				}
+				
+				if((num == 7) && scorecard.ofAKind(dice, 4)){
+					isCategoryTaken = game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[num-6] >= 0;
+				}else if(num == 7){
+					isCategoryTaken = game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[num-6] >= 0;
+					isCategoryScore = false;					
+				}
+				
+				if((num == 6) && scorecard.ofAKind(dice, 3)){
+					isCategoryTaken = game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[num-6] >= 0;
+				}else if(num == 6){
+					isCategoryTaken = game.getPlayers().get(game.currentTurn).scoreCard.getLowerSection()[num-6] >= 0;
+					isCategoryScore = false;					
+				}				
 			}
+			
+			if(!isCategoryTaken && !isCategoryScore){
+				num = setIdxCtgryToLwstSec();
+			}
+			
 		}while(isCategoryTaken);
 		System.out.println("Random Category: "+ num);
 		return num;
@@ -81,7 +110,7 @@ public class RandomStrategy implements Strategy{
 			}
 		}
 		System.out.println("Error: Catagory not selected!");
-		return 0;
+		return 999;
 	}
 
 	@Override

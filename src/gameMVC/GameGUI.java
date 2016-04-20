@@ -207,6 +207,12 @@ public class GameGUI extends JFrame{
 		menuBar.add(mnFile);
 		
 		btnNewGame = new JButton("New Game");
+		btnNewGame.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				//Not implemented
+			}
+		});
 		mnFile.add(btnNewGame);
 		
 		mnAddPlayer = new JMenu("Add Player");

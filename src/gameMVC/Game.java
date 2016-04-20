@@ -100,15 +100,19 @@ public class Game {
 	
 	public void addHuman(String name){
 		
-		players.add(new Human(name));
-		players.get(numOfPlayers).initGUI();
+		Player human = new Human(name);
+		players.add(human);
+		human.initGUI();
+		//players.get(numOfPlayers).initGUI();
 		numOfPlayers++;
 	}
 	
 	public void addComputer(){
 		
-		players.add(new Computer(new RandomStrategy()));
-		players.get(numOfPlayers).initGUI();
+		Player computer = new Computer(new RandomStrategy());
+		players.add(computer);
+		computer.initGUI();
+		//players.get(numOfPlayers).initGUI();
 		numOfPlayers++;
 	}
 	

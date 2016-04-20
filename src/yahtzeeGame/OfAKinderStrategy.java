@@ -169,7 +169,7 @@ public class OfAKinderStrategy implements Strategy {
 			}
 		}
 		System.out.println("Error: Catagory not selected!");
-		return 0;
+		return 999;
 	}
 
 	@Override

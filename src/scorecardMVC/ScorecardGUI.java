@@ -67,6 +67,8 @@ public class ScorecardGUI extends JFrame {
 	public ScorecardGUI(String playerName) {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//Add this for closing just this window
+		//setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 700);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -78,8 +80,8 @@ public class ScorecardGUI extends JFrame {
 		lblYahtzee.setBounds(12, 13, 97, 28);
 		contentPane.add(lblYahtzee);
 		
-		JLabel lblName = new JLabel("Name: __________________");
-		lblName.setBounds(121, 22, 185, 16);
+		JLabel lblName = new JLabel("Name: ____________________________");
+		lblName.setBounds(121, 22, 268, 16);
 		contentPane.add(lblName);
 		
 		JLabel lblUpperSection = new JLabel("Upper Section:");
@@ -91,7 +93,7 @@ public class ScorecardGUI extends JFrame {
 		contentPane.add(lblLowerSection);
 		
 		JLabel lblPlayerName = new JLabel("Player");
-		lblPlayerName.setBounds(203, 22, 72, 16);
+		lblPlayerName.setBounds(203, 22, 125, 16);
 		contentPane.add(lblPlayerName);
 		lblPlayerName.setText(playerName);
 		
@@ -129,7 +131,7 @@ public class ScorecardGUI extends JFrame {
 			
 		this.setVisible(true);
 		//System.out.println("Current Turn"+game.currentTurn+" Amt Players"+game.getPlayers().size());
-		scoreCardController = new ScoreCardController(this, game.getPlayers().get(game.currentTurn).scoreCard);
+		scoreCardController = new ScoreCardController(this, game.getPlayers().get(game.getNumOfPlayers()).scoreCard);
 	}
 	
 	//------------------
