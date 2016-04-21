@@ -1,5 +1,11 @@
 package yahtzeeGame;
 
+/**
+ * 
+ * @author Jacob De La Rosa-Torres
+ *
+ */
+
 import scorecardMVC.ScoreCard;
 import gameMVC.Game;
 

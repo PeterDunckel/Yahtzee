@@ -1,5 +1,11 @@
 package yahtzeeGame;
 
+/**
+ * 
+ * @author Peter Dunckel
+ *
+ */
+
 import java.util.Random;
 
 import gameMVC.Game;
@@ -124,9 +130,9 @@ public class Computer extends Player{
 
 			for (int i = 0; i < picked.length; i++){
 				if(picked[i] == 1){
-					game.getDice()[i].setRollEnabled(true);
+					game.getDice()[i].setRollEnabled(DiceStatus.DICE_ENABLED);
 				}else{
-					game.getDice()[i].setRollEnabled(false);
+					game.getDice()[i].setRollEnabled(DiceStatus.DICE_DISABLED);
 				}
 			}
 

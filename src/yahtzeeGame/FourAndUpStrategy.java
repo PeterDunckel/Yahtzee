@@ -1,5 +1,11 @@
 package yahtzeeGame;
 
+/**
+ * 
+ * @author Peter Dunckel
+ *
+ */
+
 import scorecardMVC.ScoreCard;
 import gameMVC.Game;
 

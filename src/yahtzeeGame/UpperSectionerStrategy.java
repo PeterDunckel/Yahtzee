@@ -1,5 +1,11 @@
 package yahtzeeGame;
 
+/**
+ * 
+ * @author Forrest Collins
+ *
+ */
+
 import scorecardMVC.ScoreCard;
 import gameMVC.Game;
 

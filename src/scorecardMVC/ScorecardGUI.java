@@ -1,5 +1,11 @@
 package scorecardMVC;
 
+/**
+ * 
+ * @author Jacob De La Rosa-Torres, Peter Dunckel
+ *
+ */
+
 import gameMVC.Game;
 import gameMVC.GameGUI;
 

@@ -1,5 +1,11 @@
 package yahtzeeGame;
 
+/**
+ * 
+ * @author Jacob De La Rosa-Torres, Forrest Collins
+ *
+ */
+
 import gameMVC.Game;
 import gameMVC.GameController;
 import gameMVC.GameGUI;

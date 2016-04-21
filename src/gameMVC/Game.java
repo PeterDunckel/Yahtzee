@@ -6,6 +6,7 @@ import java.util.*;
 import javax.swing.JOptionPane;
 
 import yahtzeeGame.Computer;
+import yahtzeeGame.DiceStatus;
 import yahtzeeGame.Die;
 import yahtzeeGame.Human;
 import yahtzeeGame.Player;
@@ -53,12 +54,12 @@ public class Game {
 		
 		for(Die d: dice){
 			
-			if (d.getRollEnabled()){
+			if ((boolean)(d.getRollEnabled() == DiceStatus.DICE_ENABLED)){
 				d.rollDie();
 				System.out.println(d.getRollValue());
 			}
 			
-			d.setRollEnabled(true);
+			d.setRollEnabled(DiceStatus.DICE_ENABLED);
 		}
 		
 		rollCount++;
@@ -81,13 +82,13 @@ public class Game {
 	
 	public boolean enableDice(int d){
 		
-		if (dice[d].getRollEnabled()){
-			dice[d].setRollEnabled(false);
+		if ((boolean)(dice[d].getRollEnabled() == DiceStatus.DICE_ENABLED)){
+			dice[d].setRollEnabled(DiceStatus.DICE_DISABLED);
 		} else {
-			dice[d].setRollEnabled(true);
+			dice[d].setRollEnabled(DiceStatus.DICE_ENABLED);
 		}
 		
-		return dice[d].getRollEnabled();
+		return (boolean)(dice[d].getRollEnabled() == DiceStatus.DICE_ENABLED);
 	}
 	
 	public int getRollCount(){

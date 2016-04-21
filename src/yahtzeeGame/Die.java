@@ -4,7 +4,7 @@ import java.util.Random;
 
 /**
  * 
- * @author Jacob De La Rosa-Torres, Peter Dunckel
+ * @author Jacob De La Rosa-Torres, Peter Dunckel, Forrest Collins
  *
  */
 
@@ -12,11 +12,13 @@ public class Die {
 
 	private int SIDES = 6;
 	private int rollValue;
-	private boolean rollEnabled;
+	
+	private DiceStatus status;
 	
 	//Default Constructor
 	public Die(){
-		rollEnabled = true;
+//		rollEnabled = true;
+		status = DiceStatus.DICE_ENABLED;
 	}
 	
 	//---------
@@ -25,7 +27,8 @@ public class Die {
 	public void rollDie() {
 		Random rand = new Random();
 		rollValue = rand.nextInt(SIDES) + 1;
-		rollEnabled = false;
+//		rollEnabled = false;
+		status = DiceStatus.DICE_DISABLED;
 	}
 	
 	//---------------
@@ -38,15 +41,15 @@ public class Die {
 	//-----------------
 	// Set Roll Enabled
 	//-----------------
-	public void setRollEnabled(boolean r){
-		rollEnabled = r;
+	public void setRollEnabled(DiceStatus status){
+		this.status = status;
 	}
 	
 	//-----------------
 	// Get Roll Enabled
 	//-----------------
-	public boolean getRollEnabled(){
-		return rollEnabled;
+	public DiceStatus getRollEnabled(){
+		return status;
 	}
 	
 	public void setRollValue(int value){
